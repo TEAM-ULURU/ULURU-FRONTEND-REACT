@@ -78,6 +78,28 @@ function Calendar() {
     window.removeEventListener("mouseup", stopResizing);
   };
 
+  useEffect(() => {
+    const handlePopupScroll = () => {
+      if (popupRef.current) {
+        const scrollTop = popupRef.current.scrollTop;
+        const scrollHeight = popupRef.current.scrollHeight;
+        const clientHeight = popupRef.current.clientHeight;
+        const newHeight = Math.min(scrollHeight, clientHeight + scrollTop);
+        setPopupHeight(newHeight);
+      }
+    };
+
+    if (popupRef.current) {
+      popupRef.current.addEventListener("scroll", handlePopupScroll);
+    }
+
+    return () => {
+      if (popupRef.current) {
+        popupRef.current.removeEventListener("scroll", handlePopupScroll);
+      }
+    };
+  }, []);
+
   const tileDisabled = ({ date, view }) => {
     if (view === "month") {
       return date.getMonth() !== activeStartDate.getMonth();
@@ -161,10 +183,36 @@ function Calendar() {
           style={{ height: `${popupHeight}px` }}
           ref={popupRef}
         >
-          <div className="calendar-container3">
+          <div className="resize-wrapper">
             <div className="resize-handle" onMouseDown={startResizing}></div>
+          </div>
+          <div className="calendar-container3">
             <button onClick={handleClosePopup}>Close</button>
-            Container 3
+            Container 3<br></br>
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
+            안녕
           </div>
         </div>
       )}
