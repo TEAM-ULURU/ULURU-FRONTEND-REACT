@@ -7,23 +7,10 @@ import naver from "../img/Login/naver.png";
 import google from "../img/Login/google.png";
 
 const LoginScreen = () => {
-  useEffect(() => {
-    // Kakao SDK 초기화
-    if (window.Kakao && !window.Kakao.isInitialized()) {
-      window.Kakao.init("d05707469281dc335bcd4ef1f7ab312c"); // 발급받은 JavaScript 키로 SDK 초기화
-    }
-  }, []);
-
-  const handleKakaoLogin = () => {
-    window.Kakao.Auth.login({
-      success: (authObj) => {
-        console.log(authObj);
-        // 서버로 토큰 전달 또는 다른 로직 수행
-      },
-      fail: (err) => {
-        console.error(err);
-      },
-    });
+  const handleGoogleLogin = async () => {
+    // Google 로그인 URL로 리디렉션
+    window.location.href =
+      "https://723f-210-106-232-160.ngrok-free.app/oauth2/authorization/google";
   };
 
   return (
@@ -32,19 +19,19 @@ const LoginScreen = () => {
       <h2 className="subtitle">안전한 음주생활의 시작,</h2>
       <h1 className="maintitle">al-T</h1>
       <Link to="/entering-page-1">
-        <img
-          className="kakaoButton"
-          src={kakao}
-          alt="Kakao Icon"
-          onClick={handleKakaoLogin}
-        />
+        <img className="kakaoButton" src={kakao} alt="Kakao Icon" />
       </Link>
       <Link to="/entering-page-1">
         <img className="naverButton" src={naver} alt="Naver Icon" />
       </Link>
-      <Link to="/entering-page-1">
-        <img className="googleButton" src={google} alt="Google Icon" />
-      </Link>
+
+      <img
+        className="googleButton"
+        src={google}
+        alt="Google Icon"
+        onClick={handleGoogleLogin}
+      />
+
       <Link to="/entering-page-1">
         <div className="otherMethods">다른 방법으로 시작하기</div>
       </Link>
