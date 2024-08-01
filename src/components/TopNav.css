@@ -1,0 +1,50 @@
+.top-nav {
+  position: fixed;
+  display: flex;
+  justify-content: space-between; /* 아이템들을 양 끝에 배치 */
+  align-items: center;
+  background-color: #69ecbd;
+  padding: 10px 20px; /* 여백 설정 */
+  width: 100%;
+  height: 11%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 3;
+  transition: opacity 0.3s ease; /* Opacity transition for smooth effect */
+}
+
+.top-nav.scrolled {
+  opacity: 0.8; /* Reduce opacity when scrolled */
+}
+
+.top-logo {
+  height: 45px; /* 로고 이미지 높이 설정 */
+  margin-left: 10px;
+  margin-bottom: 5px;
+}
+
+.top-icons {
+  display: flex;
+  align-items: center; /* 수직 가운데 정렬 */
+}
+
+.top-icon {
+  height: 32px; /* 아이콘 이미지 높이 설정 */
+  margin-bottom: 0px;
+
+  margin-left: 20px; /* 아이콘 간격 설정 */
+  position: relative;
+}
+
+/* 알림 아이콘의 오른쪽 상단에 빨간 점 추가 */
+.top-icon.notify::after {
+  content: "";
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  width: 8px;
+  height: 8px;
+  background-color: red;
+  border-radius: 50%;
+}

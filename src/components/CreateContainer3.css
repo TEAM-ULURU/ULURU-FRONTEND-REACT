@@ -1,0 +1,98 @@
+.location-container {
+  padding: 0 10px;
+}
+
+.start-location,
+.end-location {
+  display: flex;
+  flex-direction: row;
+}
+.locationStart,
+.locationEnd {
+  margin: 0 10px;
+}
+
+.location-text,
+.location-input {
+  border-radius: 20px;
+  padding: 10px;
+  width: 350px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 15px;
+  text-align: left;
+  padding: 0 25px;
+}
+.location-connector {
+  width: 20px;
+  height: 30px;
+  border-left: 2.8px dashed #444444;
+
+  margin-left: 32px;
+}
+
+.location-input {
+  border: 2px solid #444444;
+  background-color: white;
+  color: #444444;
+}
+
+.location-input:focus {
+  outline: none;
+}
+
+.goTime {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 30px;
+  margin-top: 30px;
+  width: 400px;
+  margin-left: 12px;
+}
+
+.goTime-item {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 50px;
+  padding: 10px;
+  width: 120px;
+  height: 60px;
+  border: 2px solid #444444;
+  justify-content: center;
+}
+.goTime-item span {
+  color: #444444;
+  font-weight: 550;
+  font-size: 18px;
+}
+
+.goIcon1 {
+  width: 28px;
+  height: 28px;
+  margin-right: 10px;
+}
+.goIcon2 {
+  width: 32px;
+  height: 32px;
+  margin-right: 8px;
+}
+.goIcon3 {
+  width: 30px;
+  height: 30px;
+  margin-right: 4px;
+}
+
+.appLink {
+  display: flex;
+  justify-content: around;
+  padding: 0 10px;
+  margin-left: 10px;
+}
+
+.kbIcon {
+  width: 180px;
+  height: 57.1px;
+  margin-right: 15px;
+  cursor: pointer;
+}

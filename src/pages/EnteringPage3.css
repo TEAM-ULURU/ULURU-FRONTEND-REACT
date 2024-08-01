@@ -1,0 +1,48 @@
+.input-group input.addressInput {
+  width: calc(100% - 180px); /* 부모의 너비를 기준으로 조정 */
+  height: 60px;
+  padding: 0 5%;
+
+  font-size: 18px;
+  border: 1px solid #f0f0f0;
+  border-radius: 12px;
+  background-color: #f0f0f0;
+  text-align: left; /* 텍스트를 왼쪽 정렬 */
+  margin-left: 20px;
+  margin-right: 8px;
+  margin-bottom: 10px;
+}
+
+.address-search {
+  border: none;
+  border-radius: 12px;
+  background-color: black;
+  font-size: 16px;
+  text-align: center;
+  line-height: 60px;
+  color: white;
+  width: 128px;
+  height: 60px;
+  cursor: pointer;
+}
+
+.input-group input.addressInput2 {
+  width: calc(100% - 45px); /* 부모의 너비를 기준으로 조정 */
+  padding: 0 5%;
+  margin-left: 20px;
+  margin-bottom: 30px;
+}
+
+.input-group input.EmergencyInput {
+  width: calc(100% - 45px); /* 부모의 너비를 기준으로 조정 */
+  margin-left: 20px;
+  text-align: center;
+}
+
+.error {
+  margin-left: 6%;
+  color: red;
+  font-size: 14px;
+  margin-top: 3px;
+  display: block;
+}

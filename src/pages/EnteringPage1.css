@@ -1,0 +1,206 @@
+/* Reset CSS */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Container styling */
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 0 40px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh; /* 화면 전체 높이를 사용하도록 설정 */
+  background-color: white;
+  position: relative; /* 상대 위치를 사용하여 내부 절대 위치 요소를 조정 */
+}
+
+/* Header styling */
+.header {
+  width: 95%;
+  height: 25%; /* 화면 높이의 20%로 설정 */
+  display: flex;
+  flex-direction: column; /* 수직 정렬 */
+  align-items: flex-start; /* 왼쪽 정렬 */
+  justify-content: center; /* 수직 가운데 정렬 */
+  padding: 0 20px; /* 좌우 패딩 */
+  position: absolute; /* 절대 위치로 고정 */
+  top: 25px; /* 상단 고정 */
+  left: 10px;
+  z-index: 3;
+  background-color: white;
+}
+
+.back-button {
+  width: 40px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  margin-bottom: 30px; /* 버튼과 스텝 인디케이터 사이의 간격 */
+}
+
+.step-indicator {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.step {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  color: #969696;
+  background-color: #f0f0f0;
+  margin: 0 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+}
+
+.step.active {
+  background-color: black;
+  color: white;
+}
+
+/* Title styling */
+.title {
+  font-size: 30px;
+  color: black;
+  text-align: left; /* 왼쪽 정렬 */
+  margin-top: 0%; /* 상단 고정된 헤더 아래에 배치 */
+  width: 100%; /* 부모 컨테이너의 전체 너비 사용 */
+  padding-bottom: 10px;
+}
+
+/* Section styling */
+.section {
+  width: 100%;
+  margin: 5px 0;
+  display: flex;
+  justify-content: space-between;
+}
+
+.genderSection {
+  width: 100%;
+  margin: 90px 0;
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.label {
+  font-size: 18px;
+  margin-bottom: 20px;
+  margin-left: 10px;
+  color: #7c7c7c;
+  display: block;
+  width: 100%;
+}
+
+.gender-selection {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+
+.gender-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 30px;
+  color: #7c7c7c;
+}
+
+.gender-option img {
+  width: 120px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.input-group {
+  position: relative;
+
+  flex: 1; /* 균등하게 너비를 차지 */
+  margin: 0 10px; /* 양쪽에 간격 추가 */
+  color: #7c7c7c;
+}
+
+.input-group label {
+  display: block;
+  font-size: 18px;
+  margin-top: 10px;
+  margin-bottom: 15px;
+}
+
+.input-group input {
+  width: 100%; /* 부모의 너비를 100%로 설정 */
+  height: 60px;
+  padding: 10px;
+  padding-left: 50px; /*값 위치 조정*/
+  padding-right: 70px; /* 슬라이드 위치 조정, 단위를 표시할 공간 확보 */
+  font-size: 18px;
+  border: 1px solid #f0f0f0;
+  border-radius: 12px;
+  background-color: #f0f0f0;
+  text-align: left; /* 텍스트를 왼쪽 정렬 */
+}
+.input-wrapper {
+  position: relative;
+}
+.input-group .unit {
+  position: absolute;
+  top: 50%;
+  right: 30px; /*단위 위치조정*/
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: #999;
+  font-size: 16px;
+}
+
+/* Next Button styling */
+.next-button {
+  width: calc(100% - 80px); /* 좌우 패딩을 고려한 너비 설정 */
+  padding: 15px;
+  font-size: 18px;
+  color: #7c7c7c;
+  background-color: #f0f0f0;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  position: absolute; /* 절대 위치로 고정 */
+  bottom: 5%; /* 하단에서 20px 위에 고정 */
+  left: 50%; /* 수평 중앙 정렬 */
+  transform: translateX(-50%); /* 수평 중앙 정렬 보정 */
+  transition: background-color 0.3s, color 0.3s, cursor 0.3s; /* 전환 효과 추가 */
+  z-index: 3;
+}
+
+.next-button.enabled {
+  background-color: black; /* 버튼을 검정색으로 변경 */
+
+  color: white; /* 텍스트를 흰색으로 변경 */
+  cursor: pointer; /* 커서를 포인터로 변경 */
+}
+
+.next-button.disabled {
+  background-color: #f0f0f0; /* 버튼을 기본 색상으로 유지 */
+  color: #7c7c7c; /* 텍스트를 기본 색상으로 유지 */
+  cursor: not-allowed; /* 커서를 기본 상태로 유지 */
+}
+
+.content1 {
+  position: relative;
+  top: 20px;
+  width: 100%;
+  height: 65%; /* Content area height */
+  overflow-y: auto; /* Enable vertical scroll */
+  padding-bottom: 0px; /* Extra padding at the bottom */
+  -ms-overflow-style: none; /* IE 및 Edge에서 스크롤바 숨기기 */
+  scrollbar-width: none; /* Firefox에서 스크롤바 숨기기 */
+}
