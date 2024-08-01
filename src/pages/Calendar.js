@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import CalendarL from "react-calendar"; // 캘린더 라이브러리
 import "react-calendar/dist/Calendar.css";
 import moment from "moment";
@@ -16,6 +16,10 @@ function Calendar() {
     "2024-08-13",
   ]);
   const [selectedDate, setSelectedDate] = useState(null);
+  const [popupHeight, setPopupHeight] = useState(0);
+  const calendarRef = useRef(null);
+  const popupRef = useRef(null);
+  const isResizing = useRef(false);
 
   useEffect(() => {
     console.log("Drinking days:", drinkingDays);
@@ -38,6 +42,41 @@ function Calendar() {
       mainPage.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+  useEffect(() => {
+    if (selectedDate) {
+      const selectedTile = document.querySelector(
+        ".react-calendar__tile--active"
+      );
+      if (selectedTile) {
+        const tileRect = selectedTile.getBoundingClientRect();
+        const viewportHeight = window.innerHeight;
+        const height = viewportHeight - tileRect.bottom - 15;
+        setPopupHeight(height);
+      }
+    }
+  }, [selectedDate]);
+
+  const startResizing = (e) => {
+    e.preventDefault();
+    isResizing.current = true;
+    window.addEventListener("mousemove", handleResize);
+    window.addEventListener("mouseup", stopResizing);
+  };
+
+  const handleResize = (e) => {
+    if (isResizing.current && popupRef.current) {
+      const viewportHeight = window.innerHeight;
+      const newHeight = viewportHeight - e.clientY;
+      setPopupHeight(newHeight);
+    }
+  };
+
+  const stopResizing = () => {
+    isResizing.current = false;
+    window.removeEventListener("mousemove", handleResize);
+    window.removeEventListener("mouseup", stopResizing);
+  };
 
   const tileDisabled = ({ date, view }) => {
     if (view === "month") {
@@ -85,7 +124,9 @@ function Calendar() {
   };
 
   const handleDateClick = (date) => {
-    if (!moment(date).isSame(new Date(), "day")) {
+    if (moment(date).isSame(new Date(), "day")) {
+      setSelectedDate(null); // 현재 날짜 클릭 시 calendar-container3 닫기
+    } else {
       setSelectedDate(date); // 다른 날짜 클릭 시 calendar-container3 표시
     }
     setValue(date); // 클릭한 날짜를 값으로 설정
@@ -93,18 +134,19 @@ function Calendar() {
 
   const handleClosePopup = () => {
     setSelectedDate(null); // 팝업창 닫기
+    setPopupHeight(0); // 팝업 높이 초기화
   };
 
   return (
     <div className="MainContainer">
       <TopNav scrolled={scrolled} />
       <div className={`main-page ${scrolled ? "scrolled" : ""}`}>
-        <div className="calendar-container">
+        <div className="calendar-container" ref={calendarRef}>
           <CalendarL
             onChange={handleDateClick}
             value={value}
             calendarType="gregory"
-            formatDay={(locale, date) => moment(date).format("DD")}
+            formatDay={(locale, date) => moment(date).format("D")}
             tileDisabled={tileDisabled}
             tileClassName={tileClassName}
             tileContent={tileContent}
@@ -114,8 +156,13 @@ function Calendar() {
         <div className="calendar-container2">Container 2</div>
       </div>
       {selectedDate && (
-        <div className="popup-container">
+        <div
+          className="popup-container"
+          style={{ height: `${popupHeight}px` }}
+          ref={popupRef}
+        >
           <div className="calendar-container3">
+            <div className="resize-handle" onMouseDown={startResizing}></div>
             <button onClick={handleClosePopup}>Close</button>
             Container 3
           </div>

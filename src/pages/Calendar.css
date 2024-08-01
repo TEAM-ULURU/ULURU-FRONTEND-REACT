@@ -35,7 +35,9 @@
 .react-calendar__navigation__label:hover,
 .react-calendar__navigation__label:focus {
   border-radius: 10px;
+  background-color: white !important; /* hover 상태 배경색 흰색 */
 }
+
 .react-calendar__navigation__label__labelText {
   display: inline-block;
   vertical-align: middle;
@@ -48,11 +50,10 @@
   height: 50px;
 }
 
-.react-calendar__navigation__arrow:hover {
-  border-radius: 10px;
-}
+.react-calendar__navigation__arrow:hover,
 .react-calendar__navigation__arrow:focus {
   border-radius: 10px;
+  background-color: white !important;
 }
 
 .react-calendar__month-view__weekdays {
@@ -73,8 +74,7 @@ abbr {
   width: 450px;
   height: 400px;
 }
-.tile-wrapper {
-}
+
 .react-calendar__tile {
   /* 기본 날짜 타일 스타일 */
   position: relative;
@@ -108,7 +108,7 @@ abbr {
   /* 현재 날짜 타일 스타일 */
   color: #3cbd8f !important; /* 현재 날짜 글자색 */
   background-color: white;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .react-calendar__tile--active {
@@ -176,16 +176,18 @@ abbr {
 
 /* 슬라이드 업 애니메이션 추가 */
 .popup-container {
+  max-width: 600px;
+  margin: 0px auto;
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
-  background: rgba(0, 0, 0, 0.1);
+  background: #f8f8f8;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  animation: slide-up 0.3s ease-out;
-  height: 600px;
+  flex-direction: column;
+
+  /* box-shadow: 1px 1px 2px 0px #d3d3d340, -1px -1px 2px 0px #d3d3d340; */
+  animation: slide-up 0.1s ease-out;
   z-index: 5;
 }
 
@@ -199,9 +201,24 @@ abbr {
 }
 
 .calendar-container3 {
-  background: white;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 1px 1px 2px 0px #d3d3d340, -1px -1px 2px 0px #d3d3d340;
+  max-width: 600px;
+  width: 600px;
+  height: 900px;
+  background-color: #f8f8f8;
+
   text-align: center;
+  border-left: 1px solid #dbdbdb;
+  border-right: 1px solid #dbdbdb;
+  transition: height 0.1s ease-in-out;
+  padding-bottom: 20%;
+  padding-top: 5px;
+}
+
+.resize-handle {
+  margin: 5px auto 20px;
+  border-radius: 5px;
+  width: 20%;
+  height: 4px;
+  cursor: ns-resize;
+  background-color: #7c7c7c;
 }
