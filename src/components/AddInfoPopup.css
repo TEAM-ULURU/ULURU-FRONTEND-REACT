@@ -1,0 +1,115 @@
+/* AddInfoPopup.css */
+.add-info-popup {
+  position: fixed;
+  top: 35%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: white;
+  border-radius: 30px;
+  border: 2px solid #000000;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  width: 480px;
+  padding: 30px;
+}
+
+.popup-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.closeB {
+  cursor: pointer;
+}
+.popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  font-size: 20px;
+  font-weight: bold;
+  margin-left: 130px;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.iw {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
+}
+.popup-body .input-group1,
+.popup-body .input-group2 {
+  width: 189px;
+  margin-top: 20px;
+}
+.popup-body .input-group1 {
+  margin-right: 30px;
+}
+
+.popup-body label {
+  display: block;
+  text-align: left;
+  margin-bottom: 0px;
+  font-weight: bold;
+  font-size: 17px;
+  color: #7c7c7c;
+  margin-bottom: 10px;
+}
+
+.popup-body input,
+.popup-body select {
+  width: 100%;
+  padding: 8px;
+  background-color: #f0f0f0;
+  border-radius: 15px;
+  border: none;
+  text-align: center;
+  height: 45px;
+  font-size: 16px;
+}
+
+.popup-body .input-group3 input {
+  font-size: 14px;
+  margin-bottom: 35px;
+}
+
+.popup-footer {
+  display: flex;
+  justify-content: center;
+}
+
+.submit-button {
+  padding: 12px 60px;
+  background: black;
+  color: white;
+  border: none;
+  font-size: 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  border-radius: 25px;
+}
+
+.submit-button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.popup-body .input-with-percent {
+  display: flex;
+  align-items: center;
+}
+
+.popup-body .input-with-percent input {
+  flex: 1;
+}
+
+.popup-body .input-with-percent span {
+  margin-left: 8px;
+  font-size: 16px;
+}

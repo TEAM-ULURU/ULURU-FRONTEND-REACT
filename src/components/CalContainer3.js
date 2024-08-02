@@ -3,7 +3,9 @@ import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import "./CalContainer3.css";
 import addInput from "../img/Icon/addInput.png"; // 이미지 가져오기
+import editIcon from "../img/Icon/EditIcon.png"; // editIcon 이미지 가져오기
 import withIcon from "../img/Icon/withIcon.png"; // withIcon 이미지 가져오기
+import AddInfoPopup from "./AddInfoPopup"; // AddInfoPopup 컴포넌트 가져오기
 
 const CalContainer3 = () => {
   const [data, setData] = useState({
@@ -18,6 +20,8 @@ const CalContainer3 = () => {
       { name: "강찬욱", percentage: 30.0, count: 4 },
     ],
   });
+  const [showPopup, setShowPopup] = useState(false);
+  const [additionalInfo, setAdditionalInfo] = useState(null);
 
   useEffect(() => {
     // 백엔드에서 데이터 가져오기
@@ -89,6 +93,26 @@ const CalContainer3 = () => {
     return `rgb(${r},${g},${b})`;
   };
 
+  const handleAddInfoClick = () => {
+    setShowPopup(true);
+  };
+
+  const handlePopupClose = () => {
+    setShowPopup(false);
+  };
+
+  const handlePopupSubmit = (info) => {
+    setAdditionalInfo(info);
+    // 백엔드로 정보 보내기
+    fetch("/api/save-additional-info", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(info),
+    }).catch((error) => console.error("Error saving data:", error));
+  };
+
   return (
     <div className="cal-container3">
       <div className="mini-title">al-Tracker</div>
@@ -114,8 +138,33 @@ const CalContainer3 = () => {
             <li>
               {data.drinkType} {data.bottleAmount}병 (약 {data.mlAmount}ml)
             </li>
+            {additionalInfo && (
+              <>
+                <li>체감 취한 정도: {additionalInfo.drunkennessLevel}</li>
+                <li>{additionalInfo.hangoverText}</li>
+                {additionalInfo.food ? (
+                  <li>{additionalInfo.food} 섭취</li>
+                ) : (
+                  <li>먹은 안주 기록X</li>
+                )}
+              </>
+            )}
           </ul>
-          <img className="addInputButton" src={addInput} alt="Add Input" />
+          {additionalInfo ? (
+            <img
+              className="editInputButton"
+              src={editIcon}
+              alt="Edit Input"
+              onClick={handleAddInfoClick}
+            />
+          ) : (
+            <img
+              className="addInputButton"
+              src={addInput}
+              alt="Add Input"
+              onClick={handleAddInfoClick}
+            />
+          )}
         </div>
       </div>
       <div className="mini-title">with</div>
@@ -143,6 +192,9 @@ const CalContainer3 = () => {
           </ul>
         )}
       </div>
+      {showPopup && (
+        <AddInfoPopup onClose={handlePopupClose} onSubmit={handlePopupSubmit} />
+      )}
     </div>
   );
 };

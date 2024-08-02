@@ -190,8 +190,8 @@ function Calendar() {
           style={{ height: `${popupHeight}px` }}
           ref={popupRef}
         >
-          <div className="resize-wrapper">
-            <div className="resize-handle" onMouseDown={startResizing}></div>
+          <div className="resize-wrapper" onMouseDown={startResizing}>
+            <div className="resize-handle"></div>
           </div>
           <div className="calendar-container3">
             <div className="cc3-first">
