@@ -22,6 +22,7 @@
   height: 45px; /* 로고 이미지 높이 설정 */
   margin-left: 10px;
   margin-bottom: 5px;
+  cursor: pointer;
 }
 
 .top-icons {

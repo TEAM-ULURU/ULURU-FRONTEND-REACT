@@ -1,0 +1,117 @@
+.cal-container3 {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  width: 510px;
+}
+.cal-container3-1 {
+  min-height: 150px;
+  padding: 40px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 1px 1px 2px 0px #d3d3d340, -1px -1px 2px 0px #d3d3d340;
+  margin-bottom: 23px;
+  display: flex;
+}
+.cal-container3-2 {
+  min-height: 150px;
+  padding: 40px 40px 15px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 1px 1px 2px 0px #d3d3d340, -1px -1px 2px 0px #d3d3d340;
+}
+
+.mini-title {
+  text-align: left;
+  margin-left: 10px;
+  color: #000000;
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.progress-bar {
+  width: 150px;
+  height: 150px;
+  margin-right: 75px;
+  margin-left: 10px;
+}
+
+.cal-container3 .CircularProgressbar-text {
+  transform: translateY(1px); /* 텍스트 위치 조정 */
+  font-weight: bold; /* 텍스트 두께 조정 */
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  color: #444444;
+  font-size: 15px;
+  text-align: left;
+  justify-content: center;
+  position: relative;
+  font-weight: 500;
+}
+.add-inf li {
+  list-style-type: none; /* 기존 점 제거 */
+  position: relative;
+  margin-bottom: 10px;
+}
+
+.add-inf li::before {
+  color: #444444;
+  content: "•"; /* 점을 표시할 문자 */
+  position: absolute;
+  top: 1px;
+  left: -1.5em; /* li의 위치에 따라 조정 */
+  font-size: 0.75em; /* 원하는 크기로 조정 */
+}
+
+.addInputButton {
+  width: 170px;
+  margin-top: 20px;
+  cursor: pointer;
+  margin-left: -8px;
+}
+
+.friends-list {
+  list-style-type: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  color: #444444;
+  font-size: 18px;
+}
+
+.friend-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.status-icon {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.friend-name {
+  flex: 1;
+  font-weight: 600;
+}
+
+.friend-percentage {
+  margin-right: 200px;
+  font-weight: 600;
+}
+
+.friend-count {
+  margin-left: 15px;
+  margin-right: 10px;
+  font-weight: 600;
+}
+
+.no-frd {
+  margin-top: 25px;
+  color: #a0a0a0;
+}

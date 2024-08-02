@@ -240,8 +240,8 @@
   bottom: 10%;
   left: 50%;
   transform: translateX(-50%);
-  background-color: white;
-  color: black;
+  background-color: black;
+  color: white;
   width: 500px;
   height: 60px;
   border: 1px solid #c8c8c8;

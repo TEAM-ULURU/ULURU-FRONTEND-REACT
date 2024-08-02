@@ -2,16 +2,21 @@ import React, { useState, useEffect, useRef } from "react";
 import CalendarL from "react-calendar"; // 캘린더 라이브러리
 import "react-calendar/dist/Calendar.css";
 import moment from "moment";
+import "moment/locale/ko"; // 한국어 로케일 가져오기
 import "./Calendar.css";
 import TopNav from "../components/TopNav"; // 컴포넌트
 import BottomNav from "../components/BottomNav";
-
+import CalContainer2 from "../components/CalContainer2";
+import CalContainer3 from "../components/CalContainer3";
+import closeIcon from "../img/Icon/closeIcon.png"; //이미지
+moment.locale("ko"); // moment를 한국어 로케일로 설정
 function Calendar() {
   const [scrolled, setScrolled] = useState(false);
   const [value, setValue] = useState(new Date());
   const [activeStartDate, setActiveStartDate] = useState(new Date());
   const [drinkingDays, setDrinkingDays] = useState([
     "2024-07-31",
+    "2024-08-01",
     "2024-08-04",
     "2024-08-13",
   ]);
@@ -147,7 +152,7 @@ function Calendar() {
 
   const handleDateClick = (date) => {
     if (moment(date).isSame(new Date(), "day")) {
-      setSelectedDate(null); // 현재 날짜 클릭 시 calendar-container3 닫기
+      setSelectedDate(date); // 현재 날짜 클릭 시 calendar-container3 닫기는 null // 안닫기로 변경
     } else {
       setSelectedDate(date); // 다른 날짜 클릭 시 calendar-container3 표시
     }
@@ -175,7 +180,9 @@ function Calendar() {
             onActiveStartDateChange={handleActiveStartDateChange} // 달이 바뀔 때 실행
           />
         </div>
-        <div className="calendar-container2">Container 2</div>
+        <div className="calendar-container2">
+          <CalContainer2 />
+        </div>
       </div>
       {selectedDate && (
         <div
@@ -187,32 +194,19 @@ function Calendar() {
             <div className="resize-handle" onMouseDown={startResizing}></div>
           </div>
           <div className="calendar-container3">
-            <button onClick={handleClosePopup}>Close</button>
-            Container 3<br></br>
-            <br></br>
-            <br></br>
-            <br></br>
-            <br></br>
-            <br></br>
-            <br></br>
-            <br></br>
-            <br></br>
-            <br></br>
-            <br></br>
-            <br></br>
-            <br></br>
-            <br></br>
-            <br></br>
-            <br></br>
-            <br></br>
-            <br></br>
-            <br></br>
-            <br></br>
-            <br></br>
-            <br></br>
-            <br></br>
-            <br></br>
-            안녕
+            <div className="cc3-first">
+              <span className="today-number">
+                {moment(selectedDate).format("M월 D일 dddd")}
+              </span>
+
+              <img
+                className="closebutton"
+                src={closeIcon}
+                onClick={handleClosePopup}
+                width="15px"
+              ></img>
+            </div>
+            <CalContainer3 />
           </div>
         </div>
       )}

@@ -1,0 +1,116 @@
+/* CalContainer2.css */
+.cal-container2 {
+  width: 100%;
+  max-width: 600px;
+  width: 510px;
+  padding: 30px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 1px 1px 2px 0px #d3d3d340, -1px -1px 2px 0px #d3d3d340;
+}
+/* width: 100%;
+max-width: 600px;
+width: 510px;
+padding: 30px;
+background-color: white;
+border-radius: 12px;
+box-shadow: 1px 1px 2px 0px #d3d3d340, -1px -1px 2px 0px #d3d3d340;
+text-align: center;
+display: flex;
+align-items: center;
+justify-content: center;
+margin-bottom: 45px; */
+.jb {
+  text-align: left;
+  font-weight: bold;
+  font-size: 21px;
+  padding-top: 10px;
+  padding-left: 10px;
+  padding-bottom: 10px;
+  margin-bottom: 30px;
+}
+.chart {
+  margin-right: 30px;
+  margin-left: 30px;
+  display: flex;
+  align-items: flex-end;
+  margin-bottom: 100px;
+  position: relative;
+  height: 150px;
+  border-bottom: 2px solid #000;
+}
+
+.chart-bar {
+  flex: 1;
+  margin: 0 13px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  border-radius: 8px 8px 0 0;
+}
+
+.chart-label {
+  margin-top: 8px;
+  font-size: 16px;
+  position: absolute;
+  bottom: -30px;
+  color: #000000;
+}
+.chart-average-line-50 {
+  position: absolute;
+  bottom: 44%;
+  right: -9%;
+  font-size: 15px;
+  color: blue;
+}
+.chart-average-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  border: 1px dashed blue;
+}
+
+.statistics {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
+}
+
+.stat-item1 span,
+.stat-item2 span {
+  color: #7c7c7c;
+  font-size: 16px;
+}
+.stat-item1 p,
+.stat-item2 p {
+  color: #444444;
+  font-size: 25px;
+  font-weight: 600;
+  margin: 20px 0;
+}
+
+.stat-item1,
+.stat-item2 {
+  text-align: center;
+}
+.stat-item1 {
+  margin-left: 20px;
+}
+.stat-item2 {
+  margin-right: 20px;
+}
+.stat-item1-2 {
+  display: flex;
+}
+.stat-item2-2 {
+  display: flex;
+}
+.dabi {
+  margin-right: 5px;
+}
+.comparison-icon {
+  width: 20px;
+  margin-right: 4px;
+}
