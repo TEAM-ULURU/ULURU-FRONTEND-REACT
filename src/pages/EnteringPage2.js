@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "./EnteringPage2.css";
-import { Link } from "react-router-dom";
-import back from "../img/back.png"; //이미지 가져오기
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import back from "../img/back.png"; // 이미지 가져오기
 import addRefer from "../img/addRefer.png";
 
 const EnteringPage2 = () => {
@@ -24,11 +25,9 @@ const EnteringPage2 = () => {
     intoxicationLevel: "",
   });
 
-  useEffect(() => {
-    const handlePreferredTypeClick = (type) => {
-      setPreferredType(type);
-    };
+  const navigate = useNavigate();
 
+  useEffect(() => {
     // 모든 입력 필드가 채워졌고, 오류가 없는지 확인
     if (
       drinkingFrequency &&
@@ -44,6 +43,10 @@ const EnteringPage2 = () => {
       setIsNextEnabled(false);
     }
   }, [drinkingFrequency, preferredType, quantity, intoxicationLevel, errors]);
+
+  const handlePreferredTypeClick = (type) => {
+    setPreferredType(type);
+  };
 
   const handleInputChange = (field, value) => {
     if (value < 0) {
@@ -68,6 +71,40 @@ const EnteringPage2 = () => {
     }));
   };
 
+  const handleSubmit = async () => {
+    const data = {
+      drinkingFrequency,
+      preferredType,
+      quantity,
+      intoxicationLevel,
+      drinkingPeriod,
+      quantityPeriod,
+      levelPeriod,
+    };
+
+    try {
+      const response = await axios.post("YOUR_BACKEND_ENDPOINT", data, {
+        headers: {
+          "Content-Type": "application/json",
+          // Authorization 헤더가 필요한 경우 여기에 추가
+          // "Authorization": `Bearer ${accessToken}`,
+        },
+      });
+
+      if (response.status === 200) {
+        // 성공적인 응답 처리
+        navigate("/entering-page-3");
+      } else {
+        // 오류 응답 처리
+        console.error("데이터 제출 실패");
+      }
+    } catch (error) {
+      console.error("오류 발생:", error);
+      // 백엔드 연결이 안되어 있을 경우 바로 다음 페이지로 이동
+      navigate("/entering-page-3");
+    }
+  };
+
   return (
     <div className="container">
       <div className="header">
@@ -75,6 +112,7 @@ const EnteringPage2 = () => {
           className="back-button"
           src={back}
           onClick={() => window.history.back()}
+          alt="뒤로가기"
         ></img>
         <div className="step-indicator">
           <span className="step">1</span>
@@ -89,7 +127,6 @@ const EnteringPage2 = () => {
         <div className="section1">
           <div className="input-group">
             <label className="p2label">음주 빈도</label>
-
             <input
               className="middleInput"
               placeholder="0"
@@ -99,7 +136,6 @@ const EnteringPage2 = () => {
                 handleInputChange("drinkingFrequency", e.target.value)
               }
             />
-
             <span className="unit1">회</span>
             <select
               className={`refer ${
@@ -123,7 +159,7 @@ const EnteringPage2 = () => {
               className={`drinkselect ${
                 preferredType === "소주" ? "selected" : ""
               }`}
-              onClick={() => setPreferredType("소주")}
+              onClick={() => handlePreferredTypeClick("소주")}
             >
               소주
             </div>
@@ -131,7 +167,7 @@ const EnteringPage2 = () => {
               className={`drinkselect ${
                 preferredType === "맥주" ? "selected" : ""
               }`}
-              onClick={() => setPreferredType("맥주")}
+              onClick={() => handlePreferredTypeClick("맥주")}
             >
               맥주
             </div>
@@ -151,7 +187,6 @@ const EnteringPage2 = () => {
                 style={{
                   marginLeft: "35px",
                   width: "350px",
-
                   marginBottom: "10px",
                 }}
                 src={addRefer}
@@ -171,7 +206,6 @@ const EnteringPage2 = () => {
               value={quantity}
               onChange={(e) => handleInputChange("quantity", e.target.value)}
             />
-
             <span className="unit1">병</span>
             <select
               className={`refer ${
@@ -189,7 +223,6 @@ const EnteringPage2 = () => {
           {errors.quantity && <span className="error">{errors.quantity}</span>}
           <div className="input-group">
             <label className="p2label">취하는 정도</label>
-
             <input
               className="middleInput"
               placeholder="0"
@@ -199,7 +232,6 @@ const EnteringPage2 = () => {
                 handleInputChange("intoxicationLevel", e.target.value)
               }
             />
-
             <span className="unit1">%</span>
             <select
               className={`refer ${
@@ -221,14 +253,13 @@ const EnteringPage2 = () => {
         {/* 추가 공간을 위한 div */}
         <div className="spacer"></div>
       </div>
-      <Link to="/entering-page-3">
-        <button
-          className={`next-button ${isNextEnabled ? "enabled" : "disabled"}`}
-          disabled={!isNextEnabled}
-        >
-          다음
-        </button>
-      </Link>
+      <button
+        className={`next-button ${isNextEnabled ? "enabled" : "disabled"}`}
+        disabled={!isNextEnabled}
+        onClick={handleSubmit}
+      >
+        다음
+      </button>
     </div>
   );
 };

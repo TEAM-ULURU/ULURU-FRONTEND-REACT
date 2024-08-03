@@ -1,0 +1,156 @@
+.df-container1 {
+  width: 100%;
+  max-width: 600px;
+  width: 520px;
+  padding: 30px;
+  margin-bottom: 35px;
+  background-color: white;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 1px 1px 2px 0px #d3d3d340, -1px -1px 2px 0px #d3d3d340; /* 그림자 추가 */
+  text-align: center;
+}
+.df-container2 {
+  width: 100%;
+  max-width: 600px;
+  width: 520px;
+  padding: 50px 30px 45px;
+  margin-bottom: 35px;
+  background-color: white;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 1px 1px 2px 0px #d3d3d340, -1px -1px 2px 0px #d3d3d340; /* 그림자 추가 */
+  text-align: center;
+}
+
+.df-container1 p {
+  font-size: 21px;
+  font-weight: bolder;
+  margin-top: 5px;
+  margin-left: 10px;
+  margin-bottom: 40px;
+  text-align: left;
+}
+
+.checkIcon {
+  margin-right: 10px;
+  margin-left: 4px;
+  cursor: pointer;
+}
+.dfriends-list {
+  list-style-type: none;
+  padding: 0;
+  color: #444444;
+  font-size: 18px;
+  margin-bottom: 80px;
+  padding-left: 26px;
+}
+.drinkCup {
+  margin-top: 2px;
+  margin-right: 5px;
+}
+.withIcon {
+  margin-top: 2px;
+  margin-right: 3px;
+}
+
+.dfriend-name {
+  margin-right: 170px;
+  font-size: 19px;
+}
+
+.dfriend-stats {
+  display: flex;
+  gap: 10px;
+  font-size: 19px;
+}
+
+.drinks-this-week,
+.drinks-together {
+  display: flex;
+  align-items: center;
+}
+
+.drinks-this-week {
+  margin-right: 23px;
+}
+
+.codeTransfer {
+  margin-right: 35px;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+.addFriend {
+  cursor: pointer;
+}
+
+.df-container2 {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin-bottom: 20px;
+}
+
+.friend-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.friend-info-title {
+  margin-bottom: 10px;
+  color: #7c7c7c;
+  font-size: 16px;
+}
+.friend-info-detail {
+  margin-top: -1px;
+  color: #7c7c7c;
+  font-size: 16px;
+}
+
+.friend-info-name {
+  color: #444444;
+  font-size: 25px;
+  font-weight: 600;
+  margin: 20px 0;
+}
+
+.stat-item1,
+.stat-item2 {
+  text-align: center;
+}
+.stat-item1 {
+  margin-left: 20px;
+}
+.stat-item2 {
+  margin-right: 20px;
+}
+.stat-item1-2 {
+  display: flex;
+}
+.stat-item2-2 {
+  display: flex;
+}
+.dabi {
+  margin-right: 5px;
+}
+
+.transfer-status {
+  position: absolute;
+  color: black;
+  font-family: pretendard;
+  top: 40%;
+  left: 28%;
+  background-color: white;
+  width: 250px;
+  height: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 30px;
+  box-shadow: 2px 2px 2px 0px #d3d3d340, -1px -1px 2px 0px #d3d3d340; /* 그림자 추가 */
+}

@@ -1,0 +1,60 @@
+.myp-container {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  width: 510px;
+  height: 500px;
+  padding: 35px;
+  margin-top: 70px;
+  margin-bottom: 35px;
+  background-color: white;
+  border-radius: 20px;
+}
+
+.whiteCircle {
+  position: absolute;
+  top: -13%;
+  left: 38.2%;
+}
+.mycharFe {
+  width: 65px;
+  position: absolute;
+  top: -8%;
+  left: 43%;
+}
+.mycharMale {
+  width: 65px;
+  position: absolute;
+  top: -8%;
+  left: 43%;
+}
+.character {
+  width: 65px;
+  position: absolute;
+  top: -8%;
+  left: 43%;
+}
+
+.logout {
+  width: 480px;
+  margin-bottom: 17px;
+  margin-left: 17.5px;
+  cursor: pointer;
+}
+.accDel {
+  width: 480px;
+  margin-left: 17.5px;
+  margin-bottom: 50px;
+  cursor: pointer;
+}
+
+.email-type-icon {
+  width: 20px;
+  margin-left: 5px;
+}
+
+.myEI {
+  width: 20px;
+  margin-left: 5px;
+  cursor: pointer;
+}

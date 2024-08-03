@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import "./Home.css";
 import TopNav from "../components/TopNav";
 import BottomNav from "../components/BottomNav";
@@ -18,6 +19,33 @@ const Home = () => {
   const [showInputModal, setShowInputModal] = useState(false); // 모달 표시 여부
   const [value, setValue] = useState(0);
   const [showInviteModal, setShowInviteModal] = useState(false);
+
+  // 초기 상태 정의
+  const [userData, setUserData] = useState({
+    name: "김나영",
+    preferredDrink: "소주",
+    intoxicationLevel: 30,
+    bloodAlcoholLevel: 0,
+    currentLocation: "현위치:",
+    address: "주소",
+    trainTime: 0,
+    carTime: 0,
+    walkTime: 0,
+  });
+
+  useEffect(() => {
+    // 사용자 데이터를 백엔드에서 받아오는 함수
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get("/api/userData");
+        setUserData(response.data);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    fetchUserData();
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -130,7 +158,7 @@ const Home = () => {
                       backgroundColor: getRainbowColor(value),
                     }}
                   ></span>
-                  <span>김나영 </span>
+                  <span>{userData.name} </span>
                   <img
                     src={captainIcon}
                     className="captain-icon"
@@ -159,8 +187,19 @@ const Home = () => {
             </div>
           )}
         </div>
-        <CreateContainer2 onValueChange={setValue} />
-        <CreateContainer3 />
+        <CreateContainer2
+          onValueChange={setValue}
+          preferredDrink={userData.preferredDrink}
+          intoxicationLevel={userData.intoxicationLevel}
+          bloodAlcoholLevel={userData.bloodAlcoholLevel}
+        />
+        <CreateContainer3
+          currentLocation={userData.currentLocation}
+          address={userData.address}
+          trainTime={userData.trainTime}
+          carTime={userData.carTime}
+          walkTime={userData.walkTime}
+        />
         {showInviteModal && <InviteModal onClose={handleCloseInviteModal} />}
         {showInputModal && <InputModal onClose={handleCloseInputModal} />}
       </div>

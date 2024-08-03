@@ -10,12 +10,22 @@ import oing from "../img/Icon/oing.png"; // ? 아이콘 이미지 가져오기
 import Popup from "./Popup";
 import ControlGroup from "./ControlGroup"; // ControlGroup 컴포넌트 가져오기
 
-const CreateContainer2 = ({ onValueChange }) => {
-  const [totalValue, setTotalValue] = useState(0); // 총 수치값
-  const [angle, setAngle] = useState(0); // 게이지 선 각도 (왼쪽 끝을 가리키도록 초기값을 0도로 설정)
+const CreateContainer2 = ({
+  onValueChange,
+  preferredDrink,
+  intoxicationLevel,
+  bloodAlcoholLevel,
+}) => {
+  const [totalValue, setTotalValue] = useState(intoxicationLevel); // 초기값을 설정
+  const [angle, setAngle] = useState((intoxicationLevel / 100) * 180); // 각도 설정
   const [showPopup, setShowPopup] = useState(false); // 팝업 상태
   const [controlGroups, setControlGroups] = useState([
-    { id: Date.now(), value: 0 },
+    {
+      id: Date.now(),
+      value: 0,
+      drinkType: preferredDrink,
+      volume: preferredDrink === "소주" ? "50ml" : "225ml",
+    },
   ]);
 
   useEffect(() => {
@@ -30,11 +40,19 @@ const CreateContainer2 = ({ onValueChange }) => {
   }, [controlGroups]);
 
   useEffect(() => {
-    setAngle((totalValue / (controlGroups.length * 100)) * 180); // 각 control-group의 값을 합산하여 각도 설정
+    setAngle((totalValue / (controlGroups.length * 100)) * 180); // 각도 설정
   }, [totalValue, controlGroups.length]);
 
   const addControlGroup = () => {
-    setControlGroups([...controlGroups, { id: Date.now(), value: 0 }]);
+    setControlGroups([
+      ...controlGroups,
+      {
+        id: Date.now(),
+        value: 0,
+        drinkType: preferredDrink,
+        volume: preferredDrink === "소주" ? "50ml" : "225ml",
+      },
+    ]);
   };
 
   const deleteControlGroup = (id) => {
@@ -63,7 +81,7 @@ const CreateContainer2 = ({ onValueChange }) => {
       <div className="value-display">
         <p className="percentage">{totalValue.toFixed(1)}%</p>
         <p className="description">
-          혈중 알코올 농도 {(totalValue * 0.002).toFixed(2)}%
+          혈중 알코올 농도 {bloodAlcoholLevel.toFixed(2)}%
           <img
             src={oing}
             alt="oing"
@@ -91,6 +109,8 @@ const CreateContainer2 = ({ onValueChange }) => {
             id={group.id}
             onDelete={deleteControlGroup}
             onValueChange={handleValueChange}
+            drinkType={group.drinkType}
+            volume={group.volume}
           />
         ))}
       </div>

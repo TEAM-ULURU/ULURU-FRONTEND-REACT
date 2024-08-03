@@ -9,22 +9,72 @@ import BottomNav from "../components/BottomNav";
 import CalContainer2 from "../components/CalContainer2";
 import CalContainer3 from "../components/CalContainer3";
 import closeIcon from "../img/Icon/closeIcon.png"; //이미지
+
 moment.locale("ko"); // moment를 한국어 로케일로 설정
+
 function Calendar() {
   const [scrolled, setScrolled] = useState(false);
   const [value, setValue] = useState(new Date());
   const [activeStartDate, setActiveStartDate] = useState(new Date());
   const [drinkingDays, setDrinkingDays] = useState([
-    "2024-07-31",
-    "2024-08-01",
-    "2024-08-04",
-    "2024-08-13",
+    "2024-07-05",
+    "2024-07-10",
+    "2024-07-15",
+    "2024-07-26",
+    "2024-07-29",
+    "2024-07-30",
+    "2024-08-02",
   ]);
   const [selectedDate, setSelectedDate] = useState(null);
   const [popupHeight, setPopupHeight] = useState(0);
   const calendarRef = useRef(null);
   const popupRef = useRef(null);
   const isResizing = useRef(false);
+
+  // 예시 데이터: 각 날짜에 대한 정보
+  const dateData = {
+    "2024-08-02": {
+      percentage: 70.23,
+      alcoholLevel: 0.14,
+      drinkType: "소주",
+      bottleAmount: 1.33,
+      mlAmount: 479,
+      friends: [
+        { name: "김성무", percentage: 33.3, count: 2 },
+        { name: "김나영", percentage: 66.6, count: 1 },
+        { name: "강찬욱", percentage: 11.44, count: 4 },
+      ],
+    },
+    "2024-07-30": {
+      percentage: 50.7,
+      alcoholLevel: 0.1,
+      drinkType: "소주,맥주",
+      bottleAmount: 2.7,
+      mlAmount: 1050,
+      friends: [
+        { name: "이가영", percentage: 20.0, count: 3 },
+        { name: "서재흥", percentage: 40.0, count: 1 },
+        { name: "이다민", percentage: 66.7, count: 2 },
+      ],
+    },
+    "2024-07-29": {
+      percentage: 10.0,
+      alcoholLevel: 0.01,
+      drinkType: "맥주",
+      bottleAmount: 2,
+      mlAmount: 1000,
+      friends: [],
+    },
+    "2024-07-26": {
+      percentage: 26.7,
+      alcoholLevel: 0.08,
+      drinkType: "소주",
+      bottleAmount: 2,
+      mlAmount: 1000,
+      friends: [{ name: "이가영", percentage: 89.2, count: 3 }],
+    },
+    // 다른 날짜 데이터 추가...
+  };
 
   useEffect(() => {
     console.log("Drinking days:", drinkingDays);
@@ -164,6 +214,22 @@ function Calendar() {
     setPopupHeight(0); // 팝업 높이 초기화
   };
 
+  const getDefaultData = () => {
+    return {
+      percentage: 0,
+      alcoholLevel: 0,
+      drinkType: "소주/맥주",
+      bottleAmount: 0,
+      mlAmount: 0,
+      friends: [],
+    };
+  };
+
+  const getSelectedDateData = () => {
+    const formattedDate = moment(selectedDate).format("YYYY-MM-DD");
+    return dateData[formattedDate] || getDefaultData();
+  };
+
   return (
     <div className="MainContainer">
       <TopNav scrolled={scrolled} />
@@ -204,9 +270,10 @@ function Calendar() {
                 src={closeIcon}
                 onClick={handleClosePopup}
                 width="15px"
+                alt="close"
               ></img>
             </div>
-            <CalContainer3 />
+            <CalContainer3 data={getSelectedDateData()} />
           </div>
         </div>
       )}

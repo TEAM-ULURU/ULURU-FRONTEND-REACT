@@ -14,7 +14,7 @@
   display: flex;
 }
 .cal-container3-2 {
-  min-height: 150px;
+  min-height: 100px;
   padding: 40px 40px 15px;
   background-color: #ffffff;
   border-radius: 12px;
@@ -121,7 +121,7 @@
 }
 
 .no-frd {
-  margin-top: 25px;
+  margin-top: 4px;
   color: #a0a0a0;
   font-size: 12px;
 }

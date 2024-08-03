@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "./EnteringPage1.css";
-import { Link } from "react-router-dom";
-import back from "../img/back.png"; //이미지 가져오기
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import back from "../img/back.png"; // 이미지 가져오기
 import female from "../img/female.png";
 import male from "../img/male.png";
 import femaleSelected from "../img/clickfemale.png";
@@ -21,12 +22,15 @@ const EnteringPage1 = () => {
     bodyFat: "",
   });
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     // 나이, 키, 체중 입력 필드가 모두 채워졌는지 확인
     if (
       age &&
       height &&
       weight &&
+      selectedGender &&
       !errors.age &&
       !errors.height &&
       !errors.weight &&
@@ -36,11 +40,12 @@ const EnteringPage1 = () => {
     } else {
       setIsNextEnabled(false);
     }
-  }, [age, height, weight, errors]);
+  }, [age, height, weight, selectedGender, errors]);
 
   const handleGenderClick = (gender) => {
     setSelectedGender(gender);
   };
+
   const handleInputBlur = (field, value) => {
     if (field === "age") {
       if (value < 18 || value > 120) {
@@ -106,6 +111,37 @@ const EnteringPage1 = () => {
     if (field === "bodyFat") setBodyFat(value);
   };
 
+  const handleSubmit = async () => {
+    const data = {
+      age,
+      height,
+      weight,
+      bodyFat,
+      gender: selectedGender,
+    };
+
+    try {
+      const response = await axios.post("YOUR_BACKEND_ENDPOINT", data, {
+        headers: {
+          "Content-Type": "application/json",
+          // Authorization 헤더가 필요한 경우 여기에 추가
+          // "Authorization": `Bearer ${accessToken}`,
+        },
+      });
+
+      if (response.status === 200) {
+        // 성공적인 응답 처리
+        navigate("/entering-page-2");
+      } else {
+        // 오류 응답 처리
+        console.error("데이터 제출 실패");
+      }
+    } catch (error) {
+      console.error("오류 발생:", error);
+      navigate("/entering-page-2");
+    }
+  };
+
   return (
     <div className="container">
       <div className="header">
@@ -113,6 +149,7 @@ const EnteringPage1 = () => {
           className="back-button"
           src={back}
           onClick={() => window.history.back()}
+          alt="뒤로가기"
         ></img>
         <div className="step-indicator">
           <span className="step active">1</span>
@@ -133,7 +170,7 @@ const EnteringPage1 = () => {
             >
               <img
                 src={selectedGender === "female" ? femaleSelected : female}
-                alt="Female"
+                alt="여성"
               />
               <p>여성</p>
             </div>
@@ -143,7 +180,7 @@ const EnteringPage1 = () => {
             >
               <img
                 src={selectedGender === "male" ? maleSelected : male}
-                alt="Male"
+                alt="남성"
               />
               <p>남성</p>
             </div>
@@ -159,7 +196,6 @@ const EnteringPage1 = () => {
                 onChange={(e) => handleInputChange("age", e.target.value)}
                 onBlur={(e) => handleInputBlur("age", e.target.value)}
               />
-
               <span className="unit">세</span>
             </div>
             {errors.age && <span className="error">{errors.age}</span>}
@@ -212,14 +248,13 @@ const EnteringPage1 = () => {
           </div>
         </div>
       </div>
-      <Link to="/entering-page-2">
-        <button
-          className={`next-button ${isNextEnabled ? "enabled" : "disabled"}`}
-          disabled={!isNextEnabled}
-        >
-          다음
-        </button>
-      </Link>
+      <button
+        className={`next-button ${isNextEnabled ? "enabled" : "disabled"}`}
+        disabled={!isNextEnabled}
+        onClick={handleSubmit}
+      >
+        다음
+      </button>
     </div>
   );
 };

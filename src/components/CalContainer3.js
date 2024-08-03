@@ -7,41 +7,9 @@ import editIcon from "../img/Icon/EditIcon.png"; // editIcon 이미지 가져오
 import withIcon from "../img/Icon/withIcon.png"; // withIcon 이미지 가져오기
 import AddInfoPopup from "./AddInfoPopup"; // AddInfoPopup 컴포넌트 가져오기
 
-const CalContainer3 = () => {
-  const [data, setData] = useState({
-    percentage: 70.23,
-    alcoholLevel: 0.14,
-    drinkType: "소주",
-    bottleAmount: 1.33,
-    mlAmount: 479,
-    friends: [
-      { name: "이다민", percentage: 33.3, count: 2 },
-      { name: "김나영", percentage: 66.6, count: 1 },
-      { name: "강찬욱", percentage: 30.0, count: 4 },
-    ],
-  });
+const CalContainer3 = ({ data }) => {
   const [showPopup, setShowPopup] = useState(false);
   const [additionalInfo, setAdditionalInfo] = useState(null);
-
-  useEffect(() => {
-    // 백엔드에서 데이터 가져오기
-    fetch("/api/alcohol-data")
-      .then((response) => response.json())
-      .then((data) => {
-        setData({
-          percentage: data.percentage,
-          alcoholLevel: data.alcoholLevel,
-          drinkType: data.drinkType,
-          bottleAmount: data.bottleAmount,
-          mlAmount: data.mlAmount,
-          friends: data.friends.map((friend) => ({
-            ...friend,
-            statusColor: getRainbowColor(friend.percentage),
-          })),
-        });
-      })
-      .catch((error) => console.error("Error fetching data:", error));
-  }, []);
 
   const getGradientPathColor = () => {
     return (
@@ -136,14 +104,14 @@ const CalContainer3 = () => {
           <ul className="add-inf">
             <li>혈중 알코올 농도: {data.alcoholLevel}%</li>
             <li>
-              {data.drinkType} {data.bottleAmount}병 (약 {data.mlAmount}ml)
+              {data.drinkType}: {data.bottleAmount}병 (약 {data.mlAmount}ml)
             </li>
             {additionalInfo && (
               <>
                 <li>체감 취한 정도: {additionalInfo.drunkennessLevel}</li>
                 <li>{additionalInfo.hangoverText}</li>
                 {additionalInfo.food ? (
-                  <li>{additionalInfo.food} 섭취</li>
+                  <li>먹은 안주: {additionalInfo.food}</li>
                 ) : (
                   <li>먹은 안주 기록X</li>
                 )}

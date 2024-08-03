@@ -3,15 +3,15 @@ import drinkIcon from "../img/drinkIcon.png"; // 음료 아이콘 이미지 가�
 import addIcon from "../img/Icon/addIcon.png"; // + 아이콘 이미지 가져오기
 import minusIcon from "../img/Icon/minusIcon.png"; // - 아이콘 이미지 가져오기
 
-const ControlGroup = ({ id, onDelete, onValueChange }) => {
+const ControlGroup = ({ id, onDelete, onValueChange, drinkType, volume }) => {
   const [value, setValue] = useState(0); // 수치값
   const [angle, setAngle] = useState(0); // 게이지 선 각도 (왼쪽 끝을 가리키도록 초기값을 0도로 설정)
   const [showOptions, setShowOptions] = useState(false);
   const [customVolume, setCustomVolume] = useState(""); // 직접 선택한 용량 값
-  const [selectedDrink, setSelectedDrink] = useState("맥주");
-  const [selectedVolume, setSelectedVolume] = useState("225ml");
-  const [pendingDrink, setPendingDrink] = useState("맥주");
-  const [pendingVolume, setPendingVolume] = useState("225ml");
+  const [selectedDrink, setSelectedDrink] = useState(drinkType);
+  const [selectedVolume, setSelectedVolume] = useState(volume);
+  const [pendingDrink, setPendingDrink] = useState(drinkType);
+  const [pendingVolume, setPendingVolume] = useState(volume);
 
   useEffect(() => {
     const bottomNav = document.querySelector(".bottom-nav");
