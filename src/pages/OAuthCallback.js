@@ -14,7 +14,7 @@ const OAuthCallback = () => {
       if (state && code) {
         try {
           const response = await fetch(
-            `http://ec2-18-116-81-21.us-east-2.compute.amazonaws.com:8080/login/oauth2/code/google?state=${state}&code=${code}`,
+            `http://ec2-18-189-194-132.us-east-2.compute.amazonaws.com:8080/login/oauth2/code/google?state=${state}&code=${code}`,
             {
               credentials: "include",
             }
