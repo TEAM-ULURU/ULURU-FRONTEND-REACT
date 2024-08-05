@@ -35,7 +35,7 @@
   cursor: pointer;
 }
 
-.modal-body {
+.afmodal-body {
   display: flex;
   flex-direction: column;
   margin-bottom: 10px;
