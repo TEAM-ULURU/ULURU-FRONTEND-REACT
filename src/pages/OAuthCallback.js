@@ -14,7 +14,7 @@ const OAuthCallback = () => {
       if (state && code) {
         try {
           const response = await fetch(
-            `https://alt-backend.com/login/oauth2/code/google?state=${state}&code=${code}`,
+            `http://localhost:8080/login/oauth2/code/google?state=${state}&code=${code}`,
             {
               credentials: "include",
             }
