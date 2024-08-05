@@ -1,37 +1,55 @@
 import React, { useState, useEffect } from "react";
 import "./Friends.css";
 import axios from "axios";
-import TopNav from "../components/TopNav"; //컴포넌트 가져오기
+import TopNav from "../components/TopNav"; // 컴포넌트 가져오기
 import BottomNav from "../components/BottomNav";
-import whiteCheck from "../img/Icon/whiteCheck.png"; //이미지 가져오기
+import whiteCheck from "../img/Icon/whiteCheck.png"; // 이미지 가져오기
 import blackCheck from "../img/Icon/blackCheck.png";
 import withIcon from "../img/Icon/withIcon.png";
 import drinkCup from "../img/Icon/drinkCup.png";
 import codeTransfer from "../img/Icon/codeTransfer.png";
 import codeTransferS from "../img/Icon/codeTransferS.png";
 import addFriend from "../img/Icon/addFriend.png";
+import AddFriendModal from "../components/AddFriendModal"; // AddFriendModal 컴포넌트 가져오기
 
 function Friend() {
   const [scrolled, setScrolled] = useState(false);
-  const [friends, setFriends] = useState([
-    { name: "강찬욱", drinksThisWeek: 2, drinksTogether: 4, checked: false },
-    { name: "김나영", drinksThisWeek: 2, drinksTogether: 1, checked: false },
-    { name: "이다민", drinksThisWeek: 4, drinksTogether: 2, checked: false },
-    { name: "서재흥", drinksThisWeek: 1, drinksTogether: 3, checked: false },
-    { name: "이가영", drinksThisWeek: 1, drinksTogether: 0, checked: false },
-  ]);
-  const [mostTogether, setMostTogether] = useState({
-    name: "강찬욱",
-    drinksThisWeek: 2,
-    drinksTogether: 4,
-  });
-  const [mostThisWeek, setMostThisWeek] = useState({
-    name: "이다민",
-    drinksThisWeek: 4,
-    drinksTogether: 2,
-  });
-
+  const [friends, setFriends] = useState([]);
+  const [mostTogether, setMostTogether] = useState(null);
+  const [mostThisWeek, setMostThisWeek] = useState(null);
   const [transferStatus, setTransferStatus] = useState("");
+  const [showAddFriendModal, setShowAddFriendModal] = useState(false); // 친구 추가 모달 상태 추가
+
+  const fetchFriends = async () => {
+    try {
+      const response = await axios.get(
+        "http://ec2-18-116-81-21.us-east-2.compute.amazonaws.com:8080/api/friend/get-info",
+        {
+          headers: {
+            Authorization:
+              "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwicm9sZSI6IlVzZXIiLCJleHAiOjE3MjM3MDE1ODZ9.OUeRxAO1NwPdfCDSA9AM0mqUVMMWyfvrupuTYlT9cHU",
+          },
+        }
+      );
+      if (response.data.success) {
+        const data = response.data.friendList.map((item) => ({
+          name: item.friend.name,
+          drinksThisWeek: item.friend.numberOfDrinks,
+          drinksTogether: item.numberOfDrinkingTogether,
+          checked: false,
+        }));
+        setFriends(data);
+        setMostTogether(response.data.mostDrinkTogetherFriend);
+        setMostThisWeek(response.data.mostDrinkPerWeekFriend);
+      }
+    } catch (error) {
+      console.error("Error fetching friends data:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchFriends();
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -49,37 +67,6 @@ function Friend() {
     return () => {
       mainPage.removeEventListener("scroll", handleScroll);
     };
-  }, []);
-
-  useEffect(() => {
-    // 백엔드에서 친구 데이터를 가져오기
-    /*
-    axios
-      .get("/api/friends")
-      .then((response) => {
-        const data = response.data.map((friend) => ({
-          ...friend,
-          checked: false,
-        }));
-        setFriends(data);
-        if (data.length > 0) {
-          // 가장 많이 함께한 친구
-          const mostTogetherFriend = data.reduce((max, friend) =>
-            friend.drinksTogether > max.drinksTogether ? friend : max
-          );
-          setMostTogether(mostTogetherFriend);
-
-          // 이번 주에 가장 많이 마신 친구
-          const mostThisWeekFriend = data.reduce((max, friend) =>
-            friend.drinksThisWeek > max.drinksThisWeek ? friend : max
-          );
-          setMostThisWeek(mostThisWeekFriend);
-        }
-      })
-      .catch((error) => {
-        console.error("Error fetching friends data:", error);
-      });
-    */
   }, []);
 
   const toggleCheck = (index) => {
@@ -114,6 +101,19 @@ function Friend() {
   };
 
   const hasBlackCheck = friends.some((friend) => friend.checked);
+
+  const handleAddFriendClick = () => {
+    setShowAddFriendModal(true);
+  };
+
+  const handleCloseAddFriendModal = () => {
+    setShowAddFriendModal(false);
+  };
+
+  const handleFriendAdded = () => {
+    fetchFriends(); // 친구 목록을 다시 가져오기
+    setShowAddFriendModal(false); // 모달 닫기
+  };
 
   return (
     <div className="MainContainer">
@@ -170,6 +170,7 @@ function Friend() {
               className="addFriend"
               src={addFriend}
               width="170px"
+              onClick={handleAddFriendClick} // 클릭 시 모달 열기
               alt="add"
             />
           </div>
@@ -182,9 +183,9 @@ function Friend() {
             <p className="friend-info-title">가장 많이 같이</p>
             {mostTogether && (
               <>
-                <p className="friend-info-name">{mostTogether.name}</p>
+                <p className="friend-info-name">😀{mostTogether.friend.name}</p>
                 <p className="friend-info-detail">
-                  같이한 술자리 {mostTogether.drinksTogether}회
+                  같이한 술자리 {mostTogether.numberOfDrinkingTogether}회
                 </p>
               </>
             )}
@@ -201,9 +202,9 @@ function Friend() {
             <p className="friend-info-title">이번주에 가장 많이</p>
             {mostThisWeek && (
               <>
-                <p className="friend-info-name">{mostThisWeek.name}</p>
+                <p className="friend-info-name">😵‍💫{mostThisWeek.friend.name}</p>
                 <p className="friend-info-detail">
-                  최근 7일간 {mostThisWeek.drinksThisWeek}회 음주
+                  최근 7일간 {mostThisWeek.friend.numberOfDrinks}회 음주
                 </p>
               </>
             )}
@@ -211,6 +212,12 @@ function Friend() {
         </div>
       </div>
       <BottomNav />
+      {showAddFriendModal && (
+        <AddFriendModal
+          onClose={handleCloseAddFriendModal}
+          onFriendAdded={handleFriendAdded}
+        />
+      )}
     </div>
   );
 }

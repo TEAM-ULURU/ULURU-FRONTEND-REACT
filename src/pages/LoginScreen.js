@@ -10,7 +10,7 @@ const LoginScreen = () => {
   const handleGoogleLogin = () => {
     // 백엔드 서버의 OAuth 엔드포인트로 리디렉션
     window.location.href =
-      "http://ec2-18-116-81-21.us-east-2.compute.amazonaws.com:8080/oauth2/authorization/google";
+      "https://alt-backend.com/oauth2/authorization/google";
   };
 
   return (

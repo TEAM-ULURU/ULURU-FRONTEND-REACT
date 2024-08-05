@@ -113,22 +113,31 @@ const EnteringPage1 = () => {
 
   const handleSubmit = async () => {
     const data = {
-      age,
-      height,
-      weight,
-      bodyFat,
+      name: "이름",
+      age: parseInt(age),
       gender: selectedGender,
+      height: parseFloat(height),
+      weight: parseFloat(weight),
+      body_fat_percentage: parseFloat(bodyFat),
+      is_oauth: false,
     };
 
     try {
-      const response = await axios.post("YOUR_BACKEND_ENDPOINT", data, {
-        headers: {
-          "Content-Type": "application/json",
-          // Authorization 헤더가 필요한 경우 여기에 추가
-          // "Authorization": `Bearer ${accessToken}`,
-        },
-      });
-
+      const response = await axios.post(
+        "https://brave-ariela-davidlee-c2a7ce37.koyeb.app/save_members/",
+        data,
+        {
+          params: {
+            token:
+              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZW1iZXJfaWQiOiIyIn0.aPB-Qp1wQeRvV_w4x_-bPINB6QBEgWDPjOb8Uo7g_o8",
+          },
+          // headers: {
+          //   Authorization:
+          //     "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZW1iZXJfaWQiOiIyIn0.LCs8i14oI3Np72aqi7QGibqmgJaqXiHaGoZZac1pVEA",
+          // },
+        }
+      );
+      console.log("설문1 전송성공");
       if (response.status === 200) {
         // 성공적인 응답 처리
         navigate("/entering-page-2");
@@ -138,7 +147,7 @@ const EnteringPage1 = () => {
       }
     } catch (error) {
       console.error("오류 발생:", error);
-      navigate("/entering-page-2");
+      //navigate("/entering-page-2");
     }
   };
 

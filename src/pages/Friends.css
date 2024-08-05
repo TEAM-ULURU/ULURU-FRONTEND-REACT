@@ -57,14 +57,17 @@
 }
 
 .dfriend-name {
-  margin-right: 170px;
   font-size: 19px;
 }
-
+li.friend-item {
+  position: relative;
+}
 .dfriend-stats {
   display: flex;
   gap: 10px;
+  position: absolute;
   font-size: 19px;
+  right: 40px;
 }
 
 .drinks-this-week,

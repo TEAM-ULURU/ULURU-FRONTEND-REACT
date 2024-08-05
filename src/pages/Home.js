@@ -17,15 +17,18 @@ const Home = () => {
   const [scrolled, setScrolled] = useState(false);
   const [showCreateContainer, setShowCreateContainer] = useState(false);
   const [showInputModal, setShowInputModal] = useState(false); // 모달 표시 여부
-  const [value, setValue] = useState(0);
   const [showInviteModal, setShowInviteModal] = useState(false);
+  const [roomCode, setRoomCode] = useState(""); // Room code 상태 추가
 
   // 초기 상태 정의
   const [userData, setUserData] = useState({
-    name: "김나영",
-    preferredDrink: "소주",
-    intoxicationLevel: 30,
+    name: "",
+    intoxicationLevel: 0,
     bloodAlcoholLevel: 0,
+    preferredDrink: "맥주",
+  });
+
+  const [locationData, setLocationData] = useState({
     currentLocation: "현위치:",
     address: "주소",
     trainTime: 0,
@@ -33,18 +36,23 @@ const Home = () => {
     walkTime: 0,
   });
 
+  const [members, setMembers] = useState([]);
+
   useEffect(() => {
-    // 사용자 데이터를 백엔드에서 받아오는 함수
-    const fetchUserData = async () => {
+    // 사용자 이름 가져오기 요청
+    const fetchUserName = async () => {
       try {
-        const response = await axios.get("/api/userData");
-        setUserData(response.data);
+        const response = await axios.get("/api/userName");
+        setUserData((prevData) => ({
+          ...prevData,
+          name: response.data.name,
+        }));
       } catch (error) {
-        console.error("Error fetching user data:", error);
+        console.error("Error fetching user name:", error);
       }
     };
 
-    fetchUserData();
+    fetchUserName();
   }, []);
 
   useEffect(() => {
@@ -65,12 +73,90 @@ const Home = () => {
     };
   }, []);
 
-  const handleCreateContainerClick = () => {
-    setShowCreateContainer(true);
+  const fetchRoomInfo = async () => {
+    try {
+      const response = await axios.get(
+        "http://ec2-18-116-81-21.us-east-2.compute.amazonaws.com:8080/api/room/get-info",
+        {
+          headers: {
+            Authorization:
+              "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwicm9sZSI6IlVzZXIiLCJleHAiOjE3MjM3MDE1ODZ9.OUeRxAO1NwPdfCDSA9AM0mqUVMMWyfvrupuTYlT9cHU",
+          },
+        }
+      );
+
+      if (response.data.success) {
+        const { roomCode, membersInRoom } = response.data.object;
+        setRoomCode(roomCode);
+        setMembers(
+          membersInRoom.map((member) => ({
+            name: member.name,
+            intoxicationLevel: member.currentLevelOfIntoxication,
+            bloodAlcoholLevel: member.currentBloodAlcoholLevel,
+          }))
+        );
+        setShowCreateContainer(true);
+      } else {
+        setShowCreateContainer(false);
+      }
+    } catch (error) {
+      console.error("Error fetching room info:", error);
+    }
   };
 
-  const handleExitClick = () => {
+  useEffect(() => {
+    fetchRoomInfo();
+    const interval = setInterval(fetchRoomInfo, 30000); // 30초마다 방 정보 갱신
+
+    return () => clearInterval(interval); // 컴포넌트 언마운트 시 인터벌 클리어
+  }, []);
+
+  const handleCreateContainerClick = async () => {
+    try {
+      const response = await axios.post(
+        "http://ec2-18-116-81-21.us-east-2.compute.amazonaws.com:8080/api/room/create",
+        {},
+        {
+          headers: {
+            Authorization:
+              "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwicm9sZSI6IlVzZXIiLCJleHAiOjE3MjM3MDE1ODZ9.OUeRxAO1NwPdfCDSA9AM0mqUVMMWyfvrupuTYlT9cHU",
+          },
+        }
+      );
+
+      const { roomCode, membersInRoom } = response.data.object;
+      setRoomCode(roomCode); // Room code 저장
+      setMembers(
+        membersInRoom.map((member) => ({
+          name: member.name,
+          intoxicationLevel: member.currentLevelOfIntoxication,
+          bloodAlcoholLevel: member.currentBloodAlcoholLevel,
+        }))
+      );
+
+      setShowCreateContainer(true);
+    } catch (error) {
+      console.error("Error creating room:", error);
+    }
+  };
+
+  const handleExitClick = async () => {
     setShowCreateContainer(false);
+    try {
+      await axios.post(
+        `http://ec2-18-116-81-21.us-east-2.compute.amazonaws.com:8080/api/room/leave?roomCode=${roomCode}`,
+        {},
+        {
+          headers: {
+            Authorization:
+              "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwicm9sZSI6IlVzZXIiLCJleHAiOjE3MjM3MDE1ODZ9.OUeRxAO1NwPdfCDSA9AM0mqUVMMWyfvrupuTYlT9cHU",
+          },
+        }
+      );
+      console.log("Exit Success");
+    } catch (error) {
+      console.error("Error sending leave request:", error);
+    }
   };
 
   const handleInviteClick = () => {
@@ -87,6 +173,19 @@ const Home = () => {
 
   const handleCloseInputModal = () => {
     setShowInputModal(false);
+  };
+
+  const handleJoinSuccess = (data) => {
+    const { roomCode, membersInRoom } = data;
+    setRoomCode(roomCode);
+    setMembers(
+      membersInRoom.map((member) => ({
+        name: member.name,
+        intoxicationLevel: member.currentLevelOfIntoxication,
+        bloodAlcoholLevel: member.currentBloodAlcoholLevel,
+      }))
+    );
+    setShowCreateContainer(true); // 참가 성공 시 create-container1-expanded 열기
   };
 
   const getRainbowColor = (value) => {
@@ -155,7 +254,9 @@ const Home = () => {
                   <span
                     className="member-status"
                     style={{
-                      backgroundColor: getRainbowColor(value),
+                      backgroundColor: getRainbowColor(
+                        userData.intoxicationLevel
+                      ),
                     }}
                   ></span>
                   <span>{userData.name} </span>
@@ -165,9 +266,27 @@ const Home = () => {
                     width="20px"
                   />
                   <span className="member-percentage">
-                    {value.toFixed(1)}% ({(value * 0.002).toFixed(2)}%)
+                    {userData.intoxicationLevel.toFixed(1)}% (
+                    {userData.bloodAlcoholLevel.toFixed(2)}%)
                   </span>
                 </div>
+                {members.map((member, index) => (
+                  <div className="member-item" key={index}>
+                    <span
+                      className="member-status"
+                      style={{
+                        backgroundColor: getRainbowColor(
+                          member.intoxicationLevel
+                        ),
+                      }}
+                    ></span>
+                    <span>{member.name} </span>
+                    <span className="member-percentage">
+                      {member.intoxicationLevel.toFixed(1)}% (
+                      {member.bloodAlcoholLevel.toFixed(2)}%)
+                    </span>
+                  </div>
+                ))}
               </div>
               <div className="bottomButton">
                 <img
@@ -188,20 +307,31 @@ const Home = () => {
           )}
         </div>
         <CreateContainer2
-          onValueChange={setValue}
-          preferredDrink={userData.preferredDrink}
-          intoxicationLevel={userData.intoxicationLevel}
-          bloodAlcoholLevel={userData.bloodAlcoholLevel}
+          onValueChange={(value) =>
+            setUserData((prevData) => ({
+              ...prevData,
+              intoxicationLevel: value,
+            }))
+          }
+          userData={userData}
+          setUserData={setUserData}
         />
         <CreateContainer3
-          currentLocation={userData.currentLocation}
-          address={userData.address}
-          trainTime={userData.trainTime}
-          carTime={userData.carTime}
-          walkTime={userData.walkTime}
+          locationData={locationData}
+          setLocationData={setLocationData}
         />
-        {showInviteModal && <InviteModal onClose={handleCloseInviteModal} />}
-        {showInputModal && <InputModal onClose={handleCloseInputModal} />}
+        {showInviteModal && (
+          <InviteModal
+            onClose={handleCloseInviteModal}
+            roomCode={roomCode} // roomCode 전달
+          />
+        )}
+        {showInputModal && (
+          <InputModal
+            onClose={handleCloseInputModal}
+            onJoinSuccess={handleJoinSuccess}
+          />
+        )}
       </div>
       <BottomNav></BottomNav>
     </div>

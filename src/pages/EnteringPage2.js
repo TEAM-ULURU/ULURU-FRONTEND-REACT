@@ -73,24 +73,32 @@ const EnteringPage2 = () => {
 
   const handleSubmit = async () => {
     const data = {
-      drinkingFrequency,
-      preferredType,
-      quantity,
-      intoxicationLevel,
-      drinkingPeriod,
-      quantityPeriod,
-      levelPeriod,
+      drinking_frequency: drinkingFrequency, //기준값당 음주횟수
+      type_of_alcohol: preferredType, //선호주종
+      number_of_bottles: quantity, //기준값당 마시는양
+      percent_per_reference_value: intoxicationLevel, //기준값당 취하는 정도
+      drinking_frequency_reference_value: drinkingPeriod, //음주횟수 기준값
+      average_alcohol_intake: quantityPeriod, //마시는 양 기준값
+      degree_of_intoxication: levelPeriod, //취하는정도 기준값
+      is_oauth: false,
     };
 
     try {
-      const response = await axios.post("YOUR_BACKEND_ENDPOINT", data, {
-        headers: {
-          "Content-Type": "application/json",
-          // Authorization 헤더가 필요한 경우 여기에 추가
-          // "Authorization": `Bearer ${accessToken}`,
-        },
-      });
-
+      const response = await axios.post(
+        "https://brave-ariela-davidlee-c2a7ce37.koyeb.app/save_members/",
+        data,
+        {
+          params: {
+            token:
+              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZW1iZXJfaWQiOiIyIn0.aPB-Qp1wQeRvV_w4x_-bPINB6QBEgWDPjOb8Uo7g_o8",
+          },
+          // headers: {
+          //   Authorization:
+          //     "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZW1iZXJfaWQiOiIyIn0.LCs8i14oI3Np72aqi7QGibqmgJaqXiHaGoZZac1pVEA",
+          // },
+        }
+      );
+      console.log("설문2 전송성공");
       if (response.status === 200) {
         // 성공적인 응답 처리
         navigate("/entering-page-3");
@@ -101,7 +109,7 @@ const EnteringPage2 = () => {
     } catch (error) {
       console.error("오류 발생:", error);
       // 백엔드 연결이 안되어 있을 경우 바로 다음 페이지로 이동
-      navigate("/entering-page-3");
+      //navigate("/entering-page-3");
     }
   };
 

@@ -14,7 +14,7 @@ const OAuthCallback = () => {
       if (state && code) {
         try {
           const response = await fetch(
-            `http://ec2-18-116-81-21.us-east-2.compute.amazonaws.com:8080/login/oauth2/code/google?state=${state}&code=${code}`,
+            `https://alt-backend.com/login/oauth2/code/google?state=${state}&code=${code}`,
             {
               credentials: "include",
             }
@@ -27,7 +27,9 @@ const OAuthCallback = () => {
           const contentType = response.headers.get("content-type");
           if (contentType && contentType.includes("application/json")) {
             const data = await response.json();
-            const { accessToken, isRedirectHomePage } = data.object;
+            const { accessToken } = data.object;
+            const isRedirectHomePage = data.isRedirectHomePage;
+            console.log(data);
 
             if (accessToken) {
               // 액세스 토큰을 로컬 스토리지에 저장

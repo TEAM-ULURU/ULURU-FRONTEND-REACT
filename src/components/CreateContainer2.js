@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import "./CreateContainer2.css";
 import rainbowGauge from "../img/rainbowGauge.png"; // 무지개 반원 이미지 가져오기
 import drinkIcon from "../img/drinkIcon.png"; // 음료 아이콘 이미지 가져오기
@@ -10,38 +11,158 @@ import oing from "../img/Icon/oing.png"; // ? 아이콘 이미지 가져오기
 import Popup from "./Popup";
 import ControlGroup from "./ControlGroup"; // ControlGroup 컴포넌트 가져오기
 
-const CreateContainer2 = ({
-  onValueChange,
-  preferredDrink,
-  intoxicationLevel,
-  bloodAlcoholLevel,
-}) => {
-  const [totalValue, setTotalValue] = useState(intoxicationLevel); // 초기값을 설정
-  const [angle, setAngle] = useState((intoxicationLevel / 100) * 180); // 각도 설정
+// const CreateContainer2 = ({ userData, setUserData }) => {
+//   const [angle, setAngle] = useState((userData.intoxicationLevel / 100) * 180); // 각도 설정
+//   const [showPopup, setShowPopup] = useState(false); // 팝업 상태
+//   const [controlGroups, setControlGroups] = useState([
+//     {
+//       id: Date.now(),
+//       value: 0,
+//       drinkType: userData.preferredDrink,
+//       volume: userData.preferredDrink === "소주" ? "50ml" : "225ml",
+//     },
+//   ]);
+
+//   useEffect(() => {
+//     const fetchUserData = async () => {
+//       // 백엔드에 유저 데이터를 요청
+//       // try {
+//       //   const response = await axios.get("/api/userDrinkData");
+//       //   setUserData((prevData) => ({
+//       //     ...prevData,
+//       //     intoxicationLevel: response.data.intoxicationLevel,
+//       //     bloodAlcoholLevel: response.data.bloodAlcoholLevel,
+//       //     preferredDrink: response.data.preferredDrink,
+//       //   }));
+//       //   setAngle((response.data.intoxicationLevel / 100) * 180);
+//       // } catch (error) {
+//       //   console.error("Error fetching user drink data:", error);
+//       // }
+//     };
+
+//     fetchUserData();
+//   }, [setUserData]);
+
+//   const handleValueChange = (newIntoxicationLevel, newBloodAlcoholLevel) => {
+//     setUserData((prevData) => ({
+//       ...prevData,
+//       intoxicationLevel: newIntoxicationLevel,
+//       bloodAlcoholLevel: newBloodAlcoholLevel,
+//     }));
+//     setAngle((newIntoxicationLevel / 100) * 180);
+//   };
+
+//   const addControlGroup = () => {
+//     setControlGroups([
+//       ...controlGroups,
+//       {
+//         id: Date.now(),
+//         value: 0,
+//         drinkType: userData.preferredDrink,
+//         volume: userData.preferredDrink === "소주" ? "50ml" : "225ml",
+//       },
+//     ]);
+//   };
+
+//   const deleteControlGroup = (id) => {
+//     setControlGroups(controlGroups.filter((group) => group.id !== id));
+//   };
+
+//   const togglePopup = () => {
+//     setShowPopup(!showPopup);
+//   };
+
+//   return (
+//     <div className="create-container2">
+//       <div className="gauge-container">
+//         <img src={rainbowGauge} alt="Gauge" className="gauge" />
+//         <div
+//           className="gauge-needle"
+//           style={{ transform: `rotate(${angle}deg)` }}
+//         ></div>
+//       </div>
+//       <div className="value-display">
+//         <p className="percentage">{userData.intoxicationLevel.toFixed(1)}%</p>
+//         <p className="description">
+//           혈중 알코올 농도 {userData.bloodAlcoholLevel.toFixed(2)}%
+//           <img
+//             src={oing}
+//             alt="oing"
+//             className="oing"
+//             width="18px"
+//             onClick={togglePopup}
+//           />
+//         </p>
+//       </div>
+//       {showPopup && <Popup onClose={togglePopup} />}
+//       <div className="controls">
+//         <div className="control-nav">
+//           <span>주류</span>
+//           <img
+//             src={addDrink}
+//             alt="addDrink"
+//             className="addDrink"
+//             width="28px"
+//             onClick={addControlGroup}
+//           />
+//         </div>
+//         {controlGroups.map((group) => (
+//           <ControlGroup
+//             key={group.id}
+//             id={group.id}
+//             onDelete={deleteControlGroup}
+//             onValueChange={handleValueChange}
+//             drinkType={group.drinkType}
+//             volume={group.volume}
+//           />
+//         ))}
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default CreateContainer2;
+
+const CreateContainer2 = ({ userData, setUserData }) => {
+  const initialUserData = {
+    name: "김나영",
+    intoxicationLevel: 12.3,
+    bloodAlcoholLevel: 0.02,
+    preferredDrink: "소주",
+  };
+
+  // 초기 상태 설정
+  useEffect(() => {
+    setUserData(initialUserData);
+    setAngle((initialUserData.intoxicationLevel / 100) * 180);
+  }, []);
+
+  const [angle, setAngle] = useState(
+    (initialUserData.intoxicationLevel / 100) * 180
+  ); // 각도 설정
   const [showPopup, setShowPopup] = useState(false); // 팝업 상태
   const [controlGroups, setControlGroups] = useState([
     {
       id: Date.now(),
       value: 0,
-      drinkType: preferredDrink,
-      volume: preferredDrink === "소주" ? "50ml" : "225ml",
+      drinkType: initialUserData.preferredDrink,
+      volume: initialUserData.preferredDrink === "소주" ? "50ml" : "225ml",
     },
   ]);
 
-  useEffect(() => {
-    if (onValueChange) {
-      onValueChange(totalValue);
-    }
-  }, [totalValue, onValueChange]);
-
-  useEffect(() => {
-    const newValue = controlGroups.reduce((acc, group) => acc + group.value, 0);
-    setTotalValue(newValue);
-  }, [controlGroups]);
-
-  useEffect(() => {
-    setAngle((totalValue / (controlGroups.length * 100)) * 180); // 각도 설정
-  }, [totalValue, controlGroups.length]);
+  const handleValueChange = (newIntoxicationLevel, newBloodAlcoholLevel) => {
+    // intoxicationLevel 값을 0과 100 사이로 제한
+    const limitedIntoxicationLevel = Math.min(
+      Math.max(newIntoxicationLevel, 0),
+      100
+    );
+    setUserData((prevData) => ({
+      ...prevData,
+      intoxicationLevel: limitedIntoxicationLevel,
+      bloodAlcoholLevel: newBloodAlcoholLevel,
+    }));
+    setAngle((limitedIntoxicationLevel / 100) * 180);
+  };
 
   const addControlGroup = () => {
     setControlGroups([
@@ -49,20 +170,14 @@ const CreateContainer2 = ({
       {
         id: Date.now(),
         value: 0,
-        drinkType: preferredDrink,
-        volume: preferredDrink === "소주" ? "50ml" : "225ml",
+        drinkType: userData.preferredDrink,
+        volume: userData.preferredDrink === "소주" ? "50ml" : "225ml",
       },
     ]);
   };
 
   const deleteControlGroup = (id) => {
     setControlGroups(controlGroups.filter((group) => group.id !== id));
-  };
-
-  const handleValueChange = (id, value) => {
-    setControlGroups((prevGroups) =>
-      prevGroups.map((group) => (group.id === id ? { ...group, value } : group))
-    );
   };
 
   const togglePopup = () => {
@@ -79,9 +194,9 @@ const CreateContainer2 = ({
         ></div>
       </div>
       <div className="value-display">
-        <p className="percentage">{totalValue.toFixed(1)}%</p>
+        <p className="percentage">{userData.intoxicationLevel.toFixed(1)}%</p>
         <p className="description">
-          혈중 알코올 농도 {bloodAlcoholLevel.toFixed(2)}%
+          혈중 알코올 농도 {userData.bloodAlcoholLevel.toFixed(2)}%
           <img
             src={oing}
             alt="oing"

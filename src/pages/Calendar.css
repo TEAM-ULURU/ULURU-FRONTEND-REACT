@@ -10,7 +10,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 45px;
+  margin-bottom: 35px;
 }
 
 .react-calendar {
@@ -22,12 +22,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 1em;
+  margin-bottom: 30px;
 }
 
 .react-calendar__navigation__label {
   font-weight: bold;
-  font-size: 1.2em;
+  font-size: 20px;
   flex-grow: 0; /* 레이블 크기 조정 */
   margin: 0px 10px 20px 10px;
   height: 50px;
@@ -72,7 +72,7 @@ abbr {
   flex-wrap: wrap;
   justify-content: space-between;
   width: 450px;
-  height: 400px;
+  height: 360px;
 }
 
 .react-calendar__tile {
@@ -221,6 +221,7 @@ abbr {
   background-color: #f8f8f8;
   height: 25px;
   z-index: 10;
+  cursor: ns-resize;
 }
 
 .resize-handle {

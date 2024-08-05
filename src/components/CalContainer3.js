@@ -1,3 +1,4 @@
+//이 객체가 날짜마다 있는거임.
 import React, { useEffect, useState } from "react";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";

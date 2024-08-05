@@ -12,15 +12,15 @@ const CalContainer2 = () => {
   }
 
   const [data, setData] = useState({
-    drinkingCounts: 4,
+    drinkingCounts: 7,
     avgDrinking: 55,
     lastWeekComparison1: 133,
     lastWeekComparison2: 80,
-    comparison1Status: "inc", // 초기값 설정
-    comparison2Status: "dec", // 초기값 설정
+    comparison1Status: "증가", // 초기값 설정
+    comparison2Status: "감소", // 초기값 설정
     dailyDrinking: lastWeekDates.map((date, index) => ({
       date: date,
-      percentage: [55, 0, 75, 100, 0, 0, 20][index] || 0, // 예시 데이터
+      percentage: [21, 7, 50, 80, 18, 100, 33][index] || 0, // 예시 데이터
     })),
   });
 
@@ -93,9 +93,9 @@ const CalContainer2 = () => {
   };
 
   const getComparisonIcon = (status) => {
-    if (status === "inc") {
+    if (status === "증가") {
       return <img src={inc} alt="증가" className="comparison-icon" />;
-    } else if (status === "dec") {
+    } else if (status === "감소") {
       return <img src={dec} alt="감소" className="comparison-icon" />;
     } else {
       return null;
@@ -118,7 +118,7 @@ const CalContainer2 = () => {
             <span className="chart-label">{day.date}</span>
           </div>
         ))}
-        <div className="chart-average-line" style={{ bottom: "50%" }}></div>
+        <div className="chart-average-line" style={{ bottom: "48.5%" }}></div>
         <span className="chart-average-line-50">50%</span>
       </div>
       <div className="statistics">

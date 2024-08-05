@@ -1,0 +1,71 @@
+.addFriendModal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  max-width: 600px;
+  margin: 0 auto;
+  background-color: rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.afmodal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 30px;
+  width: 400px;
+  border: 2px solid #000000;
+  position: relative;
+}
+
+.afmodal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.exit-icon {
+  cursor: pointer;
+}
+
+.modal-body {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+
+.inputfdcode {
+  display: flex;
+  flex-direction: row;
+}
+.friend-code-input {
+  font-size: 15px;
+  width: 240px;
+  padding: 10px;
+  margin-left: 10px;
+  border: 2px solid #000000;
+  border-radius: 15px;
+  margin-right: 10px;
+}
+.message {
+  color: red;
+  margin-top: 2.5px;
+  font-size: 16px;
+}
+.add-friend-button {
+  width: 100px;
+  height: 50px;
+  padding: 10px;
+  background-color: #000000;
+  color: white;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+}

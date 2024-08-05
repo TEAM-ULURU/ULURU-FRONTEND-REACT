@@ -73,20 +73,28 @@ const EnteringPage3 = () => {
   const handleSubmit = async () => {
     //백엔드 연결코드
     const data = {
-      address,
-      detailAddress,
-      contact,
+      street_name_address: address,
+      detail_address: detailAddress,
+      emergency_contact: contact,
+      is_oauth: true,
     };
 
     try {
-      const response = await axios.post("YOUR_BACKEND_ENDPOINT", data, {
-        headers: {
-          "Content-Type": "application/json",
-          // Authorization 헤더가 필요한 경우 여기에 추가
-          // "Authorization": `Bearer ${accessToken}`,
-        },
-      });
-
+      const response = await axios.post(
+        "https://brave-ariela-davidlee-c2a7ce37.koyeb.app/save_members/",
+        data,
+        {
+          params: {
+            token:
+              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZW1iZXJfaWQiOiIyIn0.aPB-Qp1wQeRvV_w4x_-bPINB6QBEgWDPjOb8Uo7g_o8",
+          },
+          // headers: {
+          //   Authorization:
+          //     "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZW1iZXJfaWQiOiIyIn0.LCs8i14oI3Np72aqi7QGibqmgJaqXiHaGoZZac1pVEA",
+          // },
+        }
+      );
+      console.log("설문3 전송성공");
       if (response.status === 200) {
         // 성공적인 응답 처리
         navigate("/home");
