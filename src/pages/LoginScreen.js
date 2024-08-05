@@ -10,7 +10,7 @@ const LoginScreen = () => {
   const handleGoogleLogin = () => {
     // 백엔드 서버의 OAuth 엔드포인트로 리디렉션
     window.location.href =
-      "https://alt-backend.com/oauth2/authorization/google";
+      "https://alt-back.run.goorm.io/oauth2/authorization/google";
   };
 
   return (
