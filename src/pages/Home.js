@@ -19,13 +19,14 @@ const Home = () => {
   const [showInputModal, setShowInputModal] = useState(false); // 모달 표시 여부
   const [showInviteModal, setShowInviteModal] = useState(false);
   const [roomCode, setRoomCode] = useState(""); // Room code 상태 추가
+  const [memberId, setMemberId] = useState(null); // 추가
 
   // 초기 상태 정의
   const [userData, setUserData] = useState({
     name: "",
     intoxicationLevel: 0,
     bloodAlcoholLevel: 0,
-    preferredDrink: "맥주",
+    preferredDrink: "",
   });
 
   const [locationData, setLocationData] = useState({
@@ -42,11 +43,29 @@ const Home = () => {
     // 사용자 이름 가져오기 요청
     const fetchUserName = async () => {
       try {
-        const response = await axios.get("/api/userName");
-        setUserData((prevData) => ({
-          ...prevData,
-          name: response.data.name,
-        }));
+        const response = await axios.get(
+          "https://brave-ariela-davidlee-c2a7ce37.koyeb.app/get_payload/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZW1iZXJfaWQiOiIyIn0.aPB-Qp1wQeRvV_w4x_-bPINB6QBEgWDPjOb8Uo7g_o8"
+        );
+        // setUserData((prevData) => ({
+        //   ...prevData,
+        //   name: response.data.name,
+        // }));
+        const memberId = response.data;
+        console.log(memberId);
+        // 두 번째 요청: member_id를 사용해 사용자 정보 가져오기
+        const userInfoResponse = await axios.get(
+          `https://brave-ariela-davidlee-c2a7ce37.koyeb.app/member_info/${memberId}`
+        );
+        const userInfo = userInfoResponse.data;
+        console.log(userInfo);
+        // userInfo에서 필요한 정보 가져와서 상태 업데이트
+        setUserData({
+          name: userInfo.name,
+          preferredDrink: userInfo.type_of_alcohol,
+        });
+        console.log(userData.name);
+        console.log(userData.preferredDrink);
+        console.log("이름업데이트 완료");
       } catch (error) {
         console.error("Error fetching user name:", error);
       }
@@ -54,6 +73,39 @@ const Home = () => {
 
     fetchUserName();
   }, []);
+
+  // useEffect(() => {
+  //   const fetchUserName = async () => {
+  //     try {
+  //       // 첫 번째 요청: member_id 가져오기
+  //       const response = await axios.get(
+  //         "https://brave-ariela-davidlee-c2a7ce37.koyeb.app/get_payload/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZW1iZXJfaWQiOiIyIn0.aPB-Qp1wQeRvV_w4x_-bPINB6QBEgWDPjOb8Uo7g_o8"
+  //       );
+
+  //       const memberId = response.data; // 응답이 단순 문자열인 경우
+
+  //       // 두 번째 요청: member_id를 사용해 사용자 정보 가져오기
+  //       const userInfoResponse = await axios.get(
+  //         `https://brave-ariela-davidlee-c2a7ce37.koyeb.app/member_info/${memberId}`
+  //       );
+
+  //       const userInfo = userInfoResponse.data;
+
+  //       // userInfo에서 필요한 정보 가져와서 상태 업데이트
+  //       setUserData({
+  //         name: userInfo.name,
+  //         intoxicationLevel: userInfo.intoxicationLevel,
+  //         bloodAlcoholLevel: userInfo.bloodAlcoholLevel,
+  //         preferredDrink: userInfo.preferredDrink,
+  //       });
+  //       console.log("초기 정보 가져오기 성공");
+  //     } catch (error) {
+  //       console.error("Error fetching user info:", error);
+  //     }
+  //   };
+
+  //   fetchUserName();
+  // }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -315,6 +367,7 @@ const Home = () => {
           }
           userData={userData}
           setUserData={setUserData}
+          memberId={memberId} // memberId 전달
         />
         <CreateContainer3
           locationData={locationData}
