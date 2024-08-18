@@ -12,14 +12,17 @@ const InputModal = ({ onClose, onJoinSuccess }) => {
   };
 
   const handleJoinClick = async () => {
-    try {
+    
+		console.log("fdfdsf");
+
+		const token = localStorage.getItem("accessToken");
       const response = await axios.post(
-        `http://ec2-18-116-81-21.us-east-2.compute.amazonaws.com:8080/api/room/enter?roomCode=${inviteCode}`,
+        "https://alt-backend.com/api/room/enter?roomCode=" + encodeURI(inviteCode),
         {},
         {
           headers: {
             Authorization:
-              "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwicm9sZSI6IlVzZXIiLCJleHAiOjE3MjM3MDE1ODZ9.OUeRxAO1NwPdfCDSA9AM0mqUVMMWyfvrupuTYlT9cHU",
+              token,
           },
         }
       );
@@ -29,9 +32,7 @@ const InputModal = ({ onClose, onJoinSuccess }) => {
       } else {
         setError("코드가 올바르지 않습니다.");
       }
-    } catch (error) {
-      setError("서버와 통신 중 오류가 발생했습니다.");
-    }
+    
   };
 
   return (

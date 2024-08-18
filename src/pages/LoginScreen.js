@@ -18,12 +18,7 @@ const LoginScreen = () => {
       <img className="logo" src={logo} alt="Logo" />
       <h2 className="subtitle">안전한 음주생활의 시작,</h2>
       <h1 className="maintitle">al-T</h1>
-      <Link to="/entering-page-1">
-        <img className="kakaoButton" src={kakao} alt="Kakao Icon" />
-      </Link>
-      <Link to="/entering-page-1">
-        <img className="naverButton" src={naver} alt="Naver Icon" />
-      </Link>
+     
       <img
         className="googleButton"
         src={google}

@@ -76,17 +76,19 @@ const EnteringPage3 = () => {
       street_name_address: address,
       detail_address: detailAddress,
       emergency_contact: contact,
-      is_oauth: true,
+      is_oauth: 1,
     };
 
     try {
+	  const token = localStorage.getItem("accessToken");
+	console.info(token.substring(7));
       const response = await axios.post(
-        "https://brave-ariela-davidlee-c2a7ce37.koyeb.app/save_members/",
+        "https://brave-ariela-davidlee-c2a7ce37.koyeb.app/save_members",
         data,
         {
           params: {
             token:
-              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZW1iZXJfaWQiOiIyIn0.aPB-Qp1wQeRvV_w4x_-bPINB6QBEgWDPjOb8Uo7g_o8",
+              token.substring(7),
           },
           // headers: {
           //   Authorization:

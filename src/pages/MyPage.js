@@ -16,23 +16,40 @@ import axios from "axios";
 function MyPage() {
   const [scrolled, setScrolled] = useState(false);
   const [userInfo, setUserInfo] = useState({
-    name: "김성무",
-    email: "ksmi8704@naver.com",
     emailType: "kakao",
     age: "23",
     gender: "남성",
-    height: 181,
-    weight: 72,
-    bodyFat: 16,
-    address: "서울시 광진구 능동로 120",
-    addressDetail: "건국대학교 쿨하우스 1335호",
-    emergencyContact: "010-3333-4444",
   });
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formValues, setFormValues] = useState({ ...userInfo });
   const [errors, setErrors] = useState({});
   const [isSaveDisabled, setIsSaveDisabled] = useState(false);
+
+  const fetchUserInfo = async () => {
+    try {
+      const token = localStorage.getItem("accessToken");
+      if (!token) {
+        console.error("Access token이 존재하지 않습니다.");
+        return; // 토큰이 없으면 API 호출을 하지 않음
+      }
+
+      const response = await axios.get("https://alt-backend.com/api/my-page/get-info", {
+        headers: {
+          Authorization: token,
+        },
+      });
+
+      setUserInfo(response.data.object); // API에서 받아온 사용자 정보를 설정
+      setFormValues(response.data.object); // 가져온 사용자 정보를 폼 값으로 설정
+    } catch (error) {
+      console.error("사용자 정보를 가져오는 데 오류가 발생했습니다:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchUserInfo();
+  }, []); // 컴포넌트가 마운트될 때 한 번만 실행
 
   useEffect(() => {
     const handleScroll = () => {
@@ -71,7 +88,7 @@ function MyPage() {
     setIsSaveDisabled(hasErrors);
   }, [errors]);
 
-  const characterImage = userInfo.gender === "남성" ? mycharMale : mycharFe;
+  const characterImage = userInfo.gender === "Male" ? mycharMale : mycharFe;
   const emailTypeIcon = userInfo.emailType === "kakao" ? minikakao : minigoogle;
 
   const openModal = () => {
@@ -96,7 +113,7 @@ function MyPage() {
     switch (name) {
       case "age":
         if (value < 18 || value > 120) {
-          error = "18세 이상 이어야 합니다.";
+          error = "18세 이상이어야 합니다.";
         }
         break;
       case "height":
@@ -144,21 +161,34 @@ function MyPage() {
     }).open();
   };
 
-  const handleSave = () => {
-    // 백엔드로 정보 전송
-    /*
-    axios
-      .post("/api/user/update", formValues)
-      .then((response) => {
-        setUserInfo(response.data);
-        closeModal();
-      })
-      .catch((error) => {
-        console.error("Error updating user data:", error);
-      });
-    */
-    setUserInfo(formValues);
-    closeModal();
+  const handleSave = async () => {
+    try {
+      const token = localStorage.getItem("accessToken");
+      if (!token) {
+        console.error("Access token이 존재하지 않습니다.");
+        return; // 토큰이 없으면 API 호출을 하지 않음
+      }
+      console.info(formValues);
+
+      // 사용자가 수정한 정보를 백엔드로 전송
+      await axios.put(
+        "https://alt-backend.com/api/my-page/update", // 사용자 정보를 업데이트할 API URL
+        formValues, // 수정된 사용자 정보
+        {
+          headers: {
+            Authorization: token, // Authorization 헤더에 토큰 추가
+          },
+        }
+      );
+
+      // API 호출이 성공하면 사용자 정보를 다시 가져와서 최신 상태로 유지
+      
+      await fetchUserInfo();
+      closeModal(); // 모달 닫기
+		
+    } catch (error) {
+      console.error("사용자 정보를 업데이트하는 데 오류가 발생했습니다:", error);
+    }
   };
 
   return (

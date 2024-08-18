@@ -84,13 +84,14 @@ const EnteringPage2 = () => {
     };
 
     try {
+	  const token = localStorage.getItem("accessToken");
       const response = await axios.post(
-        "https://brave-ariela-davidlee-c2a7ce37.koyeb.app/save_members/",
+        "https://brave-ariela-davidlee-c2a7ce37.koyeb.app/save_members",
         data,
         {
           params: {
             token:
-              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZW1iZXJfaWQiOiIyIn0.aPB-Qp1wQeRvV_w4x_-bPINB6QBEgWDPjOb8Uo7g_o8",
+              token.substring(7),
           },
           // headers: {
           //   Authorization:

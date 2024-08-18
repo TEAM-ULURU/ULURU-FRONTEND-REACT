@@ -10,18 +10,16 @@ const AddFriendModal = ({ onClose, onFriendAdded }) => {
   const handleFriendCodeChange = (e) => {
     setFriendCode(e.target.value);
   };
-
+  const token = localStorage.getItem("accessToken");
   const handleAddFriend = async () => {
     try {
       const response = await axios.post(
-        `http://ec2-18-116-81-21.us-east-2.compute.amazonaws.com:8080/api/friend/add?friendEmail=${encodeURIComponent(
-          friendCode
-        )}`,
+        "https://alt-backend.com/api/friend/add?friendEmail="+encodeURI(friendCode),
         {},
         {
           headers: {
             Authorization:
-              "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwicm9sZSI6IlVzZXIiLCJleHAiOjE3MjM3MDE1ODZ9.OUeRxAO1NwPdfCDSA9AM0mqUVMMWyfvrupuTYlT9cHU",
+              token,
           },
         }
       );

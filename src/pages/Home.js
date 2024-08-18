@@ -26,7 +26,7 @@ const Home = () => {
     name: "",
     intoxicationLevel: 0,
     bloodAlcoholLevel: 0,
-    preferredDrink: "",
+    preferredDrink: "소주",
   });
 
   const [locationData, setLocationData] = useState({
@@ -43,8 +43,9 @@ const Home = () => {
     // 사용자 이름 가져오기 요청
     const fetchUserName = async () => {
       try {
+		const token = localStorage.getItem("accessToken");
         const response = await axios.get(
-          "https://brave-ariela-davidlee-c2a7ce37.koyeb.app/get_payload/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZW1iZXJfaWQiOiIyIn0.aPB-Qp1wQeRvV_w4x_-bPINB6QBEgWDPjOb8Uo7g_o8"
+          "https://brave-ariela-davidlee-c2a7ce37.koyeb.app/get_payload/"+token.substring(7)
         );
         // setUserData((prevData) => ({
         //   ...prevData,
@@ -127,12 +128,13 @@ const Home = () => {
 
   const fetchRoomInfo = async () => {
     try {
+		const token = localStorage.getItem("accessToken");
       const response = await axios.get(
-        "http://alt-backend.com:8080/api/room/get-info",
+        "https://alt-backend.com/api/room/get-info",
         {
           headers: {
             Authorization:
-              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZW1iZXJfaWQiOiIyIn0.aPB-Qp1wQeRvV_w4x_-bPINB6QBEgWDPjOb8Uo7g_o8",
+              token,
           },
         }
       );
@@ -165,13 +167,15 @@ const Home = () => {
 
   const handleCreateContainerClick = async () => {
     try {
+		
+		const token = localStorage.getItem("accessToken");
       const response = await axios.post(
-        "http://ec2-18-116-81-21.us-east-2.compute.amazonaws.com:8080/api/room/create",
+        "https://alt-backend.com/api/room/create",
         {},
         {
           headers: {
             Authorization:
-              "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwicm9sZSI6IlVzZXIiLCJleHAiOjE3MjM3MDE1ODZ9.OUeRxAO1NwPdfCDSA9AM0mqUVMMWyfvrupuTYlT9cHU",
+              token,
           },
         }
       );
@@ -195,13 +199,14 @@ const Home = () => {
   const handleExitClick = async () => {
     setShowCreateContainer(false);
     try {
+		const token = localStorage.getItem("accessToken");
       await axios.post(
-        `http://ec2-18-116-81-21.us-east-2.compute.amazonaws.com:8080/api/room/leave?roomCode=${roomCode}`,
+        `https://alt-backend.com/api/room/leave?roomCode=${roomCode}`,
         {},
         {
           headers: {
             Authorization:
-              "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwicm9sZSI6IlVzZXIiLCJleHAiOjE3MjM3MDE1ODZ9.OUeRxAO1NwPdfCDSA9AM0mqUVMMWyfvrupuTYlT9cHU",
+              token,
           },
         }
       );
@@ -302,26 +307,6 @@ const Home = () => {
             <div className="create-container1-expanded">
               <p>술자리</p>
               <div className="member-list">
-                <div className="member-item">
-                  <span
-                    className="member-status"
-                    style={{
-                      backgroundColor: getRainbowColor(
-                        userData.intoxicationLevel
-                      ),
-                    }}
-                  ></span>
-                  <span>{userData.name} </span>
-                  <img
-                    src={captainIcon}
-                    className="captain-icon"
-                    width="20px"
-                  />
-                  <span className="member-percentage">
-                    {userData.intoxicationLevel.toFixed(1)}% (
-                    {userData.bloodAlcoholLevel.toFixed(2)}%)
-                  </span>
-                </div>
                 {members.map((member, index) => (
                   <div className="member-item" key={index}>
                     <span

@@ -113,23 +113,24 @@ const EnteringPage1 = () => {
 
   const handleSubmit = async () => {
     const data = {
-      name: "이름",
       age: parseInt(age),
       gender: selectedGender,
       height: parseFloat(height),
       weight: parseFloat(weight),
       body_fat_percentage: parseFloat(bodyFat),
-      is_oauth: false,
+      is_oauth: 0,
     };
 
     try {
+	  const token = localStorage.getItem("accessToken");
       const response = await axios.post(
-        "https://brave-ariela-davidlee-c2a7ce37.koyeb.app/save_members/",
+        "https://brave-ariela-davidlee-c2a7ce37.koyeb.app/save_members",
         data,
         {
           params: {
             token:
-              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZW1iZXJfaWQiOiIyIn0.aPB-Qp1wQeRvV_w4x_-bPINB6QBEgWDPjOb8Uo7g_o8",
+			    token.substring(7),
+
           },
           // headers: {
           //   Authorization:
